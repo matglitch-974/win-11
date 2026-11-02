@@ -21,24 +21,7 @@ Une fenêtre UAC s'ouvre — cliquer **Oui**. Le script se charge du reste en 6 
 ## Ce que le script fait
 
 ### [1/6] Bloatware supprimé
-| Application | Note |
-|---|---|
-| Cortana standalone | Remplacé par la recherche Windows |
-| Microsoft Teams (pré-installé) | Télécharger depuis le Store si besoin |
-| Bing News / Bing Météo / Bing Search | Publicité déguisée |
-| Xbox App + overlays + services | Sauf si Xbox Game Pass |
-| Mail & Calendrier | Préférer Outlook Web ou client tiers |
-| Skype | Obsolète |
-| Phone Link | Inutile sans smartphone lié |
-| Clipchamp | Éditeur vidéo promotionnel |
-| Power Automate Desktop | Usage très ciblé |
-| Solitaire Collection | Jeu avec publicités |
-| Dev Home | Programme développeurs |
-| Outlook (nouvelle version) | |
-| Mixed Reality Portal | Sauf casque WMR |
-| Feedback Hub | Rapports automatiques |
-| Maps / Alarmes / Magnétophone | Rarement utiles sur PC |
-| OneConnect / Sticky Notes / Todos | Remplacés par apps dédiées |
+Cortana · Teams pré-installé · Bing News/Météo/Search · Xbox App + overlays · Mail & Calendrier · Skype · Phone Link · Clipchamp · Power Automate · Solitaire · Dev Home · Outlook (nouvelle version) · Mixed Reality Portal · Feedback Hub · Maps · Alarmes · Magnétophone · OneConnect · Sticky Notes · Todos
 
 **Ne touche pas :** Calculatrice, Photos, Capture d'écran, Bloc-notes, Paint, Terminal, Store, Windows Security, .NET, VCLibs.
 
@@ -46,50 +29,54 @@ Une fenêtre UAC s'ouvre — cliquer **Oui**. Le script se charge du reste en 6 
 
 ### [2/6] Télémétrie & Confidentialité
 - Télémétrie → niveau 0 (GPO)
-- Publicité personnalisée → désactivée
-- Cortana + Bing dans le menu Démarrer → désactivés
-- Copilot → désactivé
-- Historique d'activités → désactivé
-- Rapports d'erreurs Windows → désactivés
-- 12 tâches planifiées de télémétrie Microsoft → désactivées
+- Publicité personnalisée, Cortana, Bing, Copilot, historique d'activités → désactivés
+- **24 tâches planifiées Microsoft** désactivées : télémétrie, diagnostics, WinSAT, mémoire, sécurité famille, Defender (scans planifiés seulement — la protection temps réel reste active)
+- Delivery Optimization → local seulement (pas de P2P avec des inconnus)
 
-### [3/6] Interface & Barre des tâches
-- Widgets et Chat intégré → masqués
-- Recherche → icône uniquement
-- Extensions de fichiers → visibles
-- Fichiers cachés → visibles
+### [3/6] Interface & Démarrage
+- Widgets, Chat, suggestions, apps silencieuses → désactivés
+- Extensions de fichiers et fichiers cachés → visibles
 - Transparence → désactivée
-- Toutes les suggestions et apps silencieuses → bloquées
+- **Applications en arrière-plan → désactivées globalement**
+- **Edge startup boost et mode background → désactivés**
+- **OneDrive retiré du démarrage** (sans désinstaller)
+- Maintenance automatique Windows → désactivée
 
-### [4/6] Services désactivés
-`DiagTrack` · `dmwappushservice` · `PcaSvc` · `WerSvc` · `MapsBroker` · `lfsvc` · `RetailDemo` · `RemoteRegistry` · `TrkWks` · `AJRouter` · `XblAuthManager` · `XblGameSave` · `XboxNetApiSvc` · `xbgm`
+### [4/6] Services désactivés (16)
+`DiagTrack` · `dmwappushservice` · `PcaSvc` · `WerSvc` · `SysMain (Superfetch)` · `MapsBroker` · `lfsvc` · `RetailDemo` · `RemoteRegistry` · `TrkWks` · `AJRouter` · `Fax` · `XblAuthManager` · `XblGameSave` · `XboxNetApiSvc` · `xbgm`
 
 ### [5/6] Performance système
 - **Plan d'alimentation** → Performances ultimes (fallback : Haute performance)
-- **Effets visuels** → Performance (animations désactivées, ombres, transparences)
-- **Priorité processeur** → Programmes au premier plan
-- **Kernel en RAM** — `DisablePagingExecutive` activé
-- **NTFS** — LastAccess et noms 8.3 désactivés (gain lecture/écriture SSD/HDD)
-- **HAGS** (Hardware-Accelerated GPU Scheduling) → activé
-- **Game Mode** automatique → activé
+- Disque, veille, hibernation automatique → désactivés
+- **Hibernation off** → libère de l'espace disque (= taille RAM)
+- Effets visuels → Performance (animations, ombres, aperçus)
+- **Arrêt rapide** : apps/services bloqués tués en 1-2 s au lieu de 5 s
+- Délai démarrage applications boot → 0
+- Priorité processeur → programmes au premier plan
+- Kernel en RAM (`DisablePagingExecutive`)
+- Page file encryption → désactivée
+- NTFS LastAccess + noms 8.3 → désactivés (gain SSD/HDD)
+- HAGS (Hardware-Accelerated GPU Scheduling) → activé
+- Game Mode automatique → activé
+- **Accélération souris → désactivée** (précision constante, essentiel pour le gaming)
 
 ### [6/6] Réseau & Gaming
-- **Network throttling** → désactivé
-- **Priorités GPU/CPU jeux** → Maximum (GPU Priority 8, CPU Priority 6, Scheduling High)
-- **Algorithme de Nagle** → désactivé sur toutes les interfaces (latence TCP réduite)
-- **Cache DNS** → élargi (résolution DNS plus rapide)
+- Network throttling → désactivé
+- Priorités GPU Priority 8 · CPU Priority 6 · Scheduling High pour les jeux
+- **Nagle désactivé sur toutes les interfaces** réseau (latence TCP réduite)
+- Cache DNS élargi (résolution plus rapide)
 
 ---
 
 ## Réversibilité
 
 - **Applications** : se réinstallent depuis le Microsoft Store.
-- **Registre** : toutes les clés sont dans `HKCU` ou `HKLM\SOFTWARE\Policies` — réversibles manuellement ou via un point de restauration.
-- **Plan d'alimentation** : `Paramètres → Système → Alimentation` pour revenir à Équilibré.
+- **Plan d'alimentation** : `Paramètres → Système → Alimentation` → Équilibré.
+- **Hibernation** : `powercfg -h on` dans une invite admin.
 - **Services** : `services.msc` → relancer et remettre en Automatique.
+- **Registre** : toutes les clés sont dans `HKCU` ou `HKLM\SOFTWARE\Policies` — point de restauration recommandé avant exécution.
 
-Pour une réversibilité complète, créer un point de restauration avant d'exécuter :
-`Win+R` → `SystemPropertiesProtection` → *Créer*.
+Créer un point de restauration : `Win+R` → `SystemPropertiesProtection` → *Créer*.
 
 ---
 

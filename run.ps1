@@ -33,7 +33,7 @@ function Set-Reg([string]$Path, [string]$Name, $Value, [string]$Type = 'DWord') 
 }
 
 function Disable-Svc([string]$Name) {
-    try { Stop-Service -Name $Name -Force }          catch {}
+    try { Stop-Service -Name $Name -Force }               catch {}
     try { Set-Service  -Name $Name -StartupType Disabled } catch {}
 }
 
@@ -52,7 +52,7 @@ Write-Host '[1/6] Suppression des applications bloatware...' -ForegroundColor Ye
 
 $apps = @(
     'Clipchamp.Clipchamp'
-    'Microsoft.549981C3F5F10'              # Cortana standalone
+    'Microsoft.549981C3F5F10'
     'Microsoft.BingNews'
     'Microsoft.BingSearch'
     'Microsoft.BingWeather'
@@ -70,7 +70,7 @@ $apps = @(
     'Microsoft.SkypeApp'
     'Microsoft.Todos'
     'Microsoft.WindowsAlarms'
-    'Microsoft.WindowsCommunicationsApps'  # Mail & Calendrier
+    'Microsoft.WindowsCommunicationsApps'
     'Microsoft.WindowsFeedbackHub'
     'Microsoft.WindowsMaps'
     'Microsoft.WindowsSoundRecorder'
@@ -91,67 +91,100 @@ foreach ($app in $apps) { Remove-App $app }
 Write-Host '  OK' -ForegroundColor Green
 
 # ── 2. Telemetrie & confidentialite ──────────────────────────────────────────
-Write-Host '[2/6] Telemetrie et confidentialite...' -ForegroundColor Yellow
+Write-Host '[2/6] Telemetrie, confidentialite et taches planifiees...' -ForegroundColor Yellow
 
-Set-Reg 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\DataCollection'                'AllowTelemetry'                             0
-Set-Reg 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection' 'AllowTelemetry'                             0
-Set-Reg 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection' 'MaxTelemetryAllowed'                        0
+Set-Reg 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\DataCollection'                'AllowTelemetry'                              0
+Set-Reg 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection' 'AllowTelemetry'                              0
+Set-Reg 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection' 'MaxTelemetryAllowed'                         0
 Set-Reg 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Privacy'                 'TailoredExperiencesWithDiagnosticDataEnabled' 0
-Set-Reg 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\AdvertisingInfo'         'Enabled'                                    0
-Set-Reg 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced'       'Start_TrackProgs'                           0
-Set-Reg 'HKCU:\SOFTWARE\Policies\Microsoft\Windows\Explorer'                      'DisableSearchBoxSuggestions'                1
-Set-Reg 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windows Search'                'AllowCortana'                               0
-Set-Reg 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Search'                  'BingSearchEnabled'                          0
-Set-Reg 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Search'                  'CortanaConsent'                             0
-Set-Reg 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Search'                  'DisableWebSearch'                           1
-Set-Reg 'HKCU:\SOFTWARE\Policies\Microsoft\Windows\WindowsCopilot'                'TurnOffWindowsCopilot'                      1
-Set-Reg 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsCopilot'                'TurnOffWindowsCopilot'                      1
-Set-Reg 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\System'                        'EnableActivityFeed'                         0
-Set-Reg 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\System'                        'PublishUserActivities'                      0
-Set-Reg 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\System'                        'UploadUserActivities'                       0
-Set-Reg 'HKCU:\SOFTWARE\Microsoft\Siuf\Rules'                                     'NumberOfSIUFInPeriod'                       0
-Set-Reg 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\DataCollection'                'DoNotShowFeedbackNotifications'             1
-Set-Reg 'HKLM:\SOFTWARE\Microsoft\Windows\Windows Error Reporting'                'Disabled'                                   1
+Set-Reg 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\AdvertisingInfo'         'Enabled'                                     0
+Set-Reg 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced'       'Start_TrackProgs'                            0
+Set-Reg 'HKCU:\SOFTWARE\Policies\Microsoft\Windows\Explorer'                      'DisableSearchBoxSuggestions'                 1
+Set-Reg 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windows Search'                'AllowCortana'                                0
+Set-Reg 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Search'                  'BingSearchEnabled'                           0
+Set-Reg 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Search'                  'CortanaConsent'                              0
+Set-Reg 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Search'                  'DisableWebSearch'                            1
+Set-Reg 'HKCU:\SOFTWARE\Policies\Microsoft\Windows\WindowsCopilot'                'TurnOffWindowsCopilot'                       1
+Set-Reg 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsCopilot'                'TurnOffWindowsCopilot'                       1
+Set-Reg 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\System'                        'EnableActivityFeed'                          0
+Set-Reg 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\System'                        'PublishUserActivities'                       0
+Set-Reg 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\System'                        'UploadUserActivities'                        0
+Set-Reg 'HKCU:\SOFTWARE\Microsoft\Siuf\Rules'                                     'NumberOfSIUFInPeriod'                        0
+Set-Reg 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\DataCollection'                'DoNotShowFeedbackNotifications'              1
+Set-Reg 'HKLM:\SOFTWARE\Microsoft\Windows\Windows Error Reporting'                'Disabled'                                    1
 
-# Taches planifiees de telemetrie
-Disable-Task '\Microsoft\Windows\Application Experience\'                     'Microsoft Compatibility Appraiser'
-Disable-Task '\Microsoft\Windows\Application Experience\'                     'ProgramDataUpdater'
-Disable-Task '\Microsoft\Windows\Application Experience\'                     'StartupAppTask'
-Disable-Task '\Microsoft\Windows\Customer Experience Improvement Program\'    'Consolidator'
-Disable-Task '\Microsoft\Windows\Customer Experience Improvement Program\'    'UsbCeip'
-Disable-Task '\Microsoft\Windows\DiskDiagnostic\'                             'Microsoft-Windows-DiskDiagnosticDataCollector'
-Disable-Task '\Microsoft\Windows\Feedback\Siuf\'                              'DmClient'
-Disable-Task '\Microsoft\Windows\Feedback\Siuf\'                              'DmClientOnScenarioDownload'
-Disable-Task '\Microsoft\Windows\Windows Error Reporting\'                    'QueueReporting'
-Disable-Task '\Microsoft\Windows\CloudExperienceHost\'                        'CreateObjectTask'
-Disable-Task '\Microsoft\Windows\PI\'                                         'Sqm-Tasks'
-Disable-Task '\Microsoft\Windows\NetTrace\'                                   'GatherNetworkInfo'
+# Delivery optimization (P2P Windows Update) -> local seulement
+Set-Reg 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\DeliveryOptimization'          'DODownloadMode'                              1
+
+# Taches planifiees : telemetrie Microsoft
+Disable-Task '\Microsoft\Windows\Application Experience\'                  'Microsoft Compatibility Appraiser'
+Disable-Task '\Microsoft\Windows\Application Experience\'                  'ProgramDataUpdater'
+Disable-Task '\Microsoft\Windows\Application Experience\'                  'StartupAppTask'
+Disable-Task '\Microsoft\Windows\Customer Experience Improvement Program\' 'Consolidator'
+Disable-Task '\Microsoft\Windows\Customer Experience Improvement Program\' 'UsbCeip'
+Disable-Task '\Microsoft\Windows\DiskDiagnostic\'                          'Microsoft-Windows-DiskDiagnosticDataCollector'
+Disable-Task '\Microsoft\Windows\Feedback\Siuf\'                           'DmClient'
+Disable-Task '\Microsoft\Windows\Feedback\Siuf\'                           'DmClientOnScenarioDownload'
+Disable-Task '\Microsoft\Windows\Windows Error Reporting\'                 'QueueReporting'
+Disable-Task '\Microsoft\Windows\CloudExperienceHost\'                     'CreateObjectTask'
+Disable-Task '\Microsoft\Windows\PI\'                                      'Sqm-Tasks'
+Disable-Task '\Microsoft\Windows\NetTrace\'                                'GatherNetworkInfo'
+
+# Taches planifiees : diagnostics et maintenance inutiles
+Disable-Task '\Microsoft\Windows\Maintenance\'                             'WinSAT'
+Disable-Task '\Microsoft\Windows\Power Efficiency Diagnostics\'            'AnalyzeSystem'
+Disable-Task '\Microsoft\Windows\MemoryDiagnostic\'                        'ProcessMemoryDiagnosticEvents'
+Disable-Task '\Microsoft\Windows\MemoryDiagnostic\'                        'RunFullMemoryDiagnostic'
+Disable-Task '\Microsoft\Windows\Shell\'                                   'FamilySafetyMonitor'
+Disable-Task '\Microsoft\Windows\Shell\'                                   'FamilySafetyRefreshTask'
+Disable-Task '\Microsoft\Windows\DiskFootprint\'                           'Diagnostics'
+Disable-Task '\Microsoft\Windows\DiskFootprint\'                           'StorageSense'
+Disable-Task '\Microsoft\Windows\Windows Defender\'                        'Windows Defender Cache Maintenance'
+Disable-Task '\Microsoft\Windows\Windows Defender\'                        'Windows Defender Cleanup'
+Disable-Task '\Microsoft\Windows\Windows Defender\'                        'Windows Defender Scheduled Scan'
+Disable-Task '\Microsoft\Windows\Windows Defender\'                        'Windows Defender Verification'
 
 Write-Host '  OK' -ForegroundColor Green
 
-# ── 3. Interface & barre des taches ──────────────────────────────────────────
-Write-Host '[3/6] Interface et barre des taches...' -ForegroundColor Yellow
+# ── 3. Interface & applications background ───────────────────────────────────
+Write-Host '[3/6] Interface, demarrage et applications background...' -ForegroundColor Yellow
 
-Set-Reg 'HKLM:\SOFTWARE\Policies\Microsoft\Dsh'                                       'AllowNewsAndInterests'         0
-Set-Reg 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced'           'TaskbarDa'                     0  # Widgets
-Set-Reg 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced'           'TaskbarMn'                     0  # Chat
-Set-Reg 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Search'                      'SearchboxTaskbarMode'          1  # Icone seulement
-Set-Reg 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced'           'HideFileExt'                   0  # Extensions visibles
-Set-Reg 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced'           'Hidden'                        1  # Fichiers caches visibles
-Set-Reg 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize'          'EnableTransparency'            0  # Transparence off
-Set-Reg 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager'      'SubscribedContent-338388Enabled' 0
-Set-Reg 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager'      'SubscribedContent-338389Enabled' 0
-Set-Reg 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager'      'SubscribedContent-353698Enabled' 0
-Set-Reg 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager'      'SystemPaneSuggestionsEnabled'  0
-Set-Reg 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager'      'SoftLandingEnabled'            0
-Set-Reg 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager'      'OemPreInstalledAppsEnabled'    0
-Set-Reg 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager'      'PreInstalledAppsEnabled'       0
-Set-Reg 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager'      'PreInstalledAppsEverEnabled'   0
-Set-Reg 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager'      'SilentInstalledAppsEnabled'    0
-Set-Reg 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager'      'SubscribedContent-338393Enabled' 0
-Set-Reg 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager'      'SubscribedContent-353694Enabled' 0
-Set-Reg 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager'      'SubscribedContent-353696Enabled' 0
-Set-Reg 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\UserProfileEngagement'       'ScoobeSystemSettingEnabled'    0
+Set-Reg 'HKLM:\SOFTWARE\Policies\Microsoft\Dsh'                                  'AllowNewsAndInterests'           0
+Set-Reg 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced'      'TaskbarDa'                       0
+Set-Reg 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced'      'TaskbarMn'                       0
+Set-Reg 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Search'                 'SearchboxTaskbarMode'            1
+Set-Reg 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced'      'HideFileExt'                     0
+Set-Reg 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced'      'Hidden'                          1
+Set-Reg 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize'     'EnableTransparency'              0
+
+# Suggestions et apps silencieuses
+Set-Reg 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager' 'SubscribedContent-338388Enabled' 0
+Set-Reg 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager' 'SubscribedContent-338389Enabled' 0
+Set-Reg 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager' 'SubscribedContent-353698Enabled' 0
+Set-Reg 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager' 'SystemPaneSuggestionsEnabled'    0
+Set-Reg 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager' 'SoftLandingEnabled'              0
+Set-Reg 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager' 'OemPreInstalledAppsEnabled'      0
+Set-Reg 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager' 'PreInstalledAppsEnabled'         0
+Set-Reg 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager' 'PreInstalledAppsEverEnabled'     0
+Set-Reg 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager' 'SilentInstalledAppsEnabled'      0
+Set-Reg 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager' 'SubscribedContent-338393Enabled' 0
+Set-Reg 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager' 'SubscribedContent-353694Enabled' 0
+Set-Reg 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager' 'SubscribedContent-353696Enabled' 0
+Set-Reg 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\UserProfileEngagement'  'ScoobeSystemSettingEnabled'      0
+
+# Applications en arriere-plan : desactiver globalement
+Set-Reg 'HKCU:\Software\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications' 'GlobalUserDisabled' 1
+Set-Reg 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\AppPrivacy'                         'LetAppsRunInBackground' 2
+
+# Edge : demarrage anticipe et mode arriere-plan
+Set-Reg 'HKLM:\SOFTWARE\Policies\Microsoft\Edge' 'StartupBoostEnabled'   0
+Set-Reg 'HKLM:\SOFTWARE\Policies\Microsoft\Edge' 'BackgroundModeEnabled' 0
+
+# OneDrive : retirer du demarrage (sans desinstaller)
+try { Remove-ItemProperty -Path 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run' -Name 'OneDrive' -Force } catch {}
+
+# Maintenance automatique Windows
+Set-Reg 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Schedule\Maintenance' 'MaintenanceDisabled' 1
 
 Write-Host '  OK' -ForegroundColor Green
 
@@ -162,12 +195,14 @@ Disable-Svc 'DiagTrack'        # Telemetrie
 Disable-Svc 'dmwappushservice' # WAP Push
 Disable-Svc 'PcaSvc'           # Compat applications
 Disable-Svc 'WerSvc'           # Rapport d'erreurs
+Disable-Svc 'SysMain'          # Superfetch (inutile sur SSD)
 Disable-Svc 'MapsBroker'       # Cartes hors ligne
 Disable-Svc 'lfsvc'            # Geolocalisation
 Disable-Svc 'RetailDemo'       # Mode demo magasin
 Disable-Svc 'RemoteRegistry'   # Registre distant
 Disable-Svc 'TrkWks'           # Tracking liens
 Disable-Svc 'AJRouter'         # AllJoyn Router
+Disable-Svc 'Fax'              # Telecopie
 Disable-Svc 'XblAuthManager'   # Xbox Live Auth
 Disable-Svc 'XblGameSave'      # Xbox Live Save
 Disable-Svc 'XboxNetApiSvc'    # Xbox Live Net
@@ -184,11 +219,19 @@ try {
     if ($out -match '([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})') {
         powercfg -setactive $matches[1] | Out-Null
     } else {
-        powercfg -setactive 8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c | Out-Null  # High Performance
+        powercfg -setactive 8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c | Out-Null
     }
-} catch {
-    try { powercfg -setactive 8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c | Out-Null } catch {}
-}
+} catch { try { powercfg -setactive 8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c | Out-Null } catch {} }
+
+# Parametres d'alimentation supplementaires
+try {
+    powercfg -change -disk-timeout-ac      0 | Out-Null  # Disque jamais eteint
+    powercfg -change -standby-timeout-ac   0 | Out-Null  # Veille desactivee (mode AC)
+    powercfg -change -hibernate-timeout-ac 0 | Out-Null  # Hibernation auto desactivee
+} catch {}
+
+# Hibernation off (libere de l'espace = taille de la RAM)
+try { powercfg -h off 2>$null | Out-Null } catch {}
 
 # Effets visuels -> Performances
 Set-Reg 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\VisualEffects'  'VisualFXSetting'        2
@@ -201,40 +244,55 @@ Set-Reg 'HKCU:\Control Panel\Desktop\WindowMetrics'                             
 Set-Reg 'HKCU:\Software\Microsoft\Windows\DWM'                                    'EnableAeroPeek'         0
 Set-Reg 'HKCU:\Software\Microsoft\Windows\DWM'                                    'AlwaysHibernateThumbnails' 0
 
-# Priorite processeur -> programmes au premier plan
-Set-Reg 'HKLM:\SYSTEM\CurrentControlSet\Control\PriorityControl'                  'Win32PrioritySeparation' 2
+# Arret rapide : tuer les apps/services bloques rapidement
+Set-Reg 'HKCU:\Control Panel\Desktop' 'HungAppTimeout'       '1000' 'String'  # 5000 par defaut
+Set-Reg 'HKCU:\Control Panel\Desktop' 'WaitToKillAppTimeout' '2000' 'String'  # 5000 par defaut
+Set-Reg 'HKCU:\Control Panel\Desktop' 'AutoEndTasks'         '1'    'String'
+Set-Reg 'HKLM:\SYSTEM\CurrentControlSet\Control' 'WaitToKillServiceTimeout' '2000' 'String'
 
-# Gestion memoire : kernel en RAM, pas de vidage fichier page a l'arret
+# Delai demarrage des applications au boot -> 0
+Set-Reg 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Serialize' 'StartupDelayInMSec' 0
+
+# Priorite processeur -> programmes au premier plan
+Set-Reg 'HKLM:\SYSTEM\CurrentControlSet\Control\PriorityControl' 'Win32PrioritySeparation' 2
+
+# Gestion memoire
 Set-Reg 'HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management' 'ClearPageFileAtShutdown' 0
 Set-Reg 'HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management' 'LargeSystemCache'        0
 Set-Reg 'HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management' 'DisablePagingExecutive'  1
+Set-Reg 'HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem'                        'NtfsEncryptPagingFile'   0
 
-# NTFS : desactiver LastAccess et noms 8.3 (gain lecture/ecriture)
+# NTFS
 try { fsutil behavior set disablelastaccess 1 2>$null | Out-Null } catch {}
-try { fsutil behavior set disable8dot3 1 2>$null | Out-Null } catch {}
+try { fsutil behavior set disable8dot3 1 2>$null | Out-Null }      catch {}
 
-# Hardware-Accelerated GPU Scheduling (HAGS)
+# Hardware-Accelerated GPU Scheduling
 Set-Reg 'HKLM:\SYSTEM\CurrentControlSet\Control\GraphicsDrivers' 'HwSchMode' 2
 
 # Game Mode automatique
 Set-Reg 'HKCU:\Software\Microsoft\GameBar' 'AutoGameModeEnabled' 1
 Set-Reg 'HKCU:\Software\Microsoft\GameBar' 'AllowAutoGameMode'   1
 
+# Acceleration de la souris -> off (precision constante, utile gaming)
+Set-Reg 'HKCU:\Control Panel\Mouse' 'MouseSpeed'      '0' 'String'
+Set-Reg 'HKCU:\Control Panel\Mouse' 'MouseThreshold1' '0' 'String'
+Set-Reg 'HKCU:\Control Panel\Mouse' 'MouseThreshold2' '0' 'String'
+
 Write-Host '  OK' -ForegroundColor Green
 
 # ── 6. Reseau & gaming ────────────────────────────────────────────────────────
 Write-Host '[6/6] Reseau et gaming...' -ForegroundColor Yellow
 
-# Desactiver le throttling reseau (streaming, jeux en ligne)
+# Network throttling off
 Set-Reg 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile' 'NetworkThrottlingIndex' 0xffffffff
 
 # Priorites GPU et CPU pour les jeux
-Set-Reg 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile\Tasks\Games' 'GPU Priority'         8
-Set-Reg 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile\Tasks\Games' 'Priority'             6
-Set-Reg 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile\Tasks\Games' 'Scheduling Category'  'High' 'String'
-Set-Reg 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile\Tasks\Games' 'SFIO Priority'        'High' 'String'
+Set-Reg 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile\Tasks\Games' 'GPU Priority'        8
+Set-Reg 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile\Tasks\Games' 'Priority'            6
+Set-Reg 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile\Tasks\Games' 'Scheduling Category' 'High' 'String'
+Set-Reg 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile\Tasks\Games' 'SFIO Priority'       'High' 'String'
 
-# Nagle desactive sur chaque interface reseau (latence TCP reduite)
+# Nagle desactive sur chaque interface reseau
 Get-ChildItem 'HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\Interfaces' | ForEach-Object {
     try {
         Set-ItemProperty -Path $_.PSPath -Name 'TcpAckFrequency' -Value 1 -Type DWord -Force
