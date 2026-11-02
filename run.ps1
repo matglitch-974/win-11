@@ -217,9 +217,19 @@ try { Remove-ItemProperty 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\Personaliza
 try { Remove-ItemProperty 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\Personalization' 'NoWindowMinimizingShortcuts' -Force } catch {}
 
 # Autoriser la personnalisation meme sans activation
-Set-Reg 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize' 'AppsUseLightTheme'         0
-Set-Reg 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize' 'SystemUsesLightTheme'      0
-Set-Reg 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize' 'ColorPrevalence'           0
+Set-Reg 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize' 'AppsUseLightTheme'              0
+Set-Reg 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize' 'SystemUsesLightTheme'           0
+Set-Reg 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize' 'ColorPrevalence'                0
+
+# Supprimer le filtrage de lisibilite dans le selecteur de couleur d'accentuation
+# (Windows 11 en theme clair bloque les couleurs jugees "illisibles")
+Set-Reg 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize' 'AccentColorMenuRestrictedMode'  0
+# Desactiver le filtre de couleur d'accessibilite si actif
+Set-Reg 'HKCU:\SOFTWARE\Microsoft\ColorFiltering'                             'Active'                         0
+Set-Reg 'HKCU:\SOFTWARE\Microsoft\ColorFiltering'                             'FilterType'                     0
+# Supprimer toute politique qui forcerait une palette restreinte
+try { Remove-ItemProperty 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\Personalization' 'PersonalColors_Background' -Force } catch {}
+try { Remove-ItemProperty 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\Personalization' 'PersonalColors_Accent'     -Force } catch {}
 
 # Notifications bas droite (Action Center) de securite / activation -> off
 Set-Reg 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Notifications\Settings\Windows.SystemToast.SecurityCenter'  'Enabled' 0
