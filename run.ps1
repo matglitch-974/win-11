@@ -147,7 +147,7 @@ Disable-Task '\Microsoft\Windows\Windows Defender\'                        'Wind
 Write-Host '  OK' -ForegroundColor Green
 
 # ── 3. Interface & applications background ───────────────────────────────────
-Write-Host '[3/6] Interface, demarrage et applications background...' -ForegroundColor Yellow
+Write-Host '[3/7] Interface, demarrage et applications background...' -ForegroundColor Yellow
 
 Set-Reg 'HKLM:\SOFTWARE\Policies\Microsoft\Dsh'                                  'AllowNewsAndInterests'           0
 Set-Reg 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced'      'TaskbarDa'                       0
@@ -176,10 +176,6 @@ Set-Reg 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\UserProfileEngagement' 
 Set-Reg 'HKCU:\Software\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications' 'GlobalUserDisabled' 1
 Set-Reg 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\AppPrivacy'                         'LetAppsRunInBackground' 2
 
-# Edge : demarrage anticipe et mode arriere-plan
-Set-Reg 'HKLM:\SOFTWARE\Policies\Microsoft\Edge' 'StartupBoostEnabled'   0
-Set-Reg 'HKLM:\SOFTWARE\Policies\Microsoft\Edge' 'BackgroundModeEnabled' 0
-
 # OneDrive : retirer du demarrage (sans desinstaller)
 try { Remove-ItemProperty -Path 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run' -Name 'OneDrive' -Force } catch {}
 
@@ -189,7 +185,7 @@ Set-Reg 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Schedule\Maintenance
 Write-Host '  OK' -ForegroundColor Green
 
 # ── 4. Services ───────────────────────────────────────────────────────────────
-Write-Host '[4/6] Services...' -ForegroundColor Yellow
+Write-Host '[4/7] Services...' -ForegroundColor Yellow
 
 Disable-Svc 'DiagTrack'        # Telemetrie
 Disable-Svc 'dmwappushservice' # WAP Push
@@ -211,7 +207,7 @@ Disable-Svc 'xbgm'             # Xbox Game Monitoring
 Write-Host '  OK' -ForegroundColor Green
 
 # ── 5. Performance systeme ────────────────────────────────────────────────────
-Write-Host '[5/6] Performance systeme...' -ForegroundColor Yellow
+Write-Host '[5/7] Performance systeme...' -ForegroundColor Yellow
 
 # Plan d'alimentation : Performances ultimes (fallback : Haute performance)
 try {
@@ -281,7 +277,7 @@ Set-Reg 'HKCU:\Control Panel\Mouse' 'MouseThreshold2' '0' 'String'
 Write-Host '  OK' -ForegroundColor Green
 
 # ── 6. Reseau & gaming ────────────────────────────────────────────────────────
-Write-Host '[6/6] Reseau et gaming...' -ForegroundColor Yellow
+Write-Host '[7/7] Reseau et gaming...' -ForegroundColor Yellow
 
 # Network throttling off
 Set-Reg 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile' 'NetworkThrottlingIndex' 0xffffffff
@@ -306,6 +302,51 @@ Set-Reg 'HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\Parameters' 'CacheHash
 Set-Reg 'HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\Parameters' 'CacheHashTableSize'       384
 Set-Reg 'HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\Parameters' 'MaxCacheEntryTtlLimit'    64000
 Set-Reg 'HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\Parameters' 'MaxSOACacheEntryTtlLimit' 301
+
+Write-Host '  OK' -ForegroundColor Green
+
+# ── 6. Navigateurs & nettoyage themes ────────────────────────────────────────
+Write-Host '[6/7] Navigateurs et themes...' -ForegroundColor Yellow
+
+# Internet Explorer : desactiver la fonctionnalite Windows
+try { Disable-WindowsOptionalFeature -Online -FeatureName 'Internet-Explorer-Optional-amd64' -NoRestart | Out-Null } catch {}
+
+# Edge : desinstaller via son propre setup
+try {
+    $setup = Get-ChildItem "${env:ProgramFiles(x86)}\Microsoft\Edge\Application" -Recurse -Filter 'setup.exe' -ErrorAction SilentlyContinue | Select-Object -Last 1
+    if ($setup) { & $setup.FullName --uninstall --system-level --force-uninstall 2>$null | Out-Null }
+} catch {}
+# Edge AppX legacy (EdgeHTML)
+try { Get-AppxPackage -Name 'Microsoft.MicrosoftEdge' -AllUsers | Remove-AppxPackage -AllUsers } catch {}
+try { Get-AppxPackage -Name 'Microsoft.MicrosoftEdge.Stable' -AllUsers | Remove-AppxPackage -AllUsers } catch {}
+# Bloquer la reinstallation automatique d'Edge par Windows Update
+Set-Reg 'HKLM:\SOFTWARE\Microsoft\EdgeUpdate' 'DoNotUpdateToEdgeWithChromium' 1
+Set-Reg 'HKLM:\SOFTWARE\Policies\Microsoft\EdgeUpdate' 'UpdateDefault' 0
+
+# Installer Firefox, Tor Browser, Brave via winget
+$wg = Get-Command winget -ErrorAction SilentlyContinue
+if ($wg) {
+    $browsers = @(
+        @{ Id = 'Mozilla.Firefox';        Name = 'Firefox'     }
+        @{ Id = 'TorProject.TorBrowser';  Name = 'Tor Browser' }
+        @{ Id = 'Brave.Brave';            Name = 'Brave'       }
+    )
+    foreach ($b in $browsers) {
+        Write-Host "  Installation de $($b.Name)..." -ForegroundColor DarkGray
+        try { winget install --id $b.Id --silent --accept-package-agreements --accept-source-agreements 2>$null | Out-Null } catch {}
+    }
+} else {
+    Write-Host '  winget absent — navigateurs a installer manuellement' -ForegroundColor DarkYellow
+}
+
+# Fonds d'ecran 4K (200-300 MB)
+Remove-Item 'C:\Windows\Web\4K\' -Recurse -Force -ErrorAction SilentlyContinue
+# Fonds d'ecran thematiques (garder le dossier Windows de base)
+Get-ChildItem 'C:\Windows\Web\Wallpaper\' -Directory -ErrorAction SilentlyContinue |
+    Where-Object { $_.Name -notin @('Windows') } |
+    ForEach-Object { Remove-Item $_.FullName -Recurse -Force -ErrorAction SilentlyContinue }
+# Ecran de verrouillage par defaut
+Remove-Item 'C:\Windows\Web\Screen\*' -Force -ErrorAction SilentlyContinue
 
 Write-Host '  OK' -ForegroundColor Green
 

@@ -33,19 +33,18 @@ Cortana · Teams pré-installé · Bing News/Météo/Search · Xbox App + overla
 - **24 tâches planifiées Microsoft** désactivées : télémétrie, diagnostics, WinSAT, mémoire, sécurité famille, Defender (scans planifiés seulement — la protection temps réel reste active)
 - Delivery Optimization → local seulement (pas de P2P avec des inconnus)
 
-### [3/6] Interface & Démarrage
+### [3/7] Interface & Démarrage
 - Widgets, Chat, suggestions, apps silencieuses → désactivés
 - Extensions de fichiers et fichiers cachés → visibles
 - Transparence → désactivée
 - **Applications en arrière-plan → désactivées globalement**
-- **Edge startup boost et mode background → désactivés**
 - **OneDrive retiré du démarrage** (sans désinstaller)
 - Maintenance automatique Windows → désactivée
 
-### [4/6] Services désactivés (16)
+### [4/7] Services désactivés (16)
 `DiagTrack` · `dmwappushservice` · `PcaSvc` · `WerSvc` · `SysMain (Superfetch)` · `MapsBroker` · `lfsvc` · `RetailDemo` · `RemoteRegistry` · `TrkWks` · `AJRouter` · `Fax` · `XblAuthManager` · `XblGameSave` · `XboxNetApiSvc` · `xbgm`
 
-### [5/6] Performance système
+### [5/7] Performance système
 - **Plan d'alimentation** → Performances ultimes (fallback : Haute performance)
 - Disque, veille, hibernation automatique → désactivés
 - **Hibernation off** → libère de l'espace disque (= taille RAM)
@@ -60,7 +59,15 @@ Cortana · Teams pré-installé · Bing News/Météo/Search · Xbox App + overla
 - Game Mode automatique → activé
 - **Accélération souris → désactivée** (précision constante, essentiel pour le gaming)
 
-### [6/6] Réseau & Gaming
+### [6/7] Navigateurs & Thèmes
+- **Internet Explorer** → fonctionnalité Windows désactivée
+- **Edge** → désinstallé (via son propre setup + AppX legacy) ; réinstallation automatique bloquée par GPO
+- **Firefox, Tor Browser, Brave** → installés via winget
+- **Fonds d'écran 4K** (`C:\Windows\Web\4K\`) → supprimés (~200–300 MB)
+- **Fonds d'écran thématiques** (Sunrise, Flow, Glow…) → supprimés ; le dossier `Windows` de base est conservé
+- **Images d'écran de verrouillage** → supprimées
+
+### [7/7] Réseau & Gaming
 - Network throttling → désactivé
 - Priorités GPU Priority 8 · CPU Priority 6 · Scheduling High pour les jeux
 - **Nagle désactivé sur toutes les interfaces** réseau (latence TCP réduite)
