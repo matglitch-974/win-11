@@ -212,12 +212,14 @@ Set-Reg 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\UserProfileEngagement' 
 Set-Reg 'HKCU:\Software\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications' 'GlobalUserDisabled' 1
 Set-Reg 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\AppPrivacy'                         'LetAppsRunInBackground' 2
 
-# Auto-masquage de la barre des taches
-# Note : Windows 11 n'autorise la barre qu'en bas nativement. Hors du bas -> ExplorerPatcher requis.
+# Barre des taches : auto-masquage + position (natif Win 11 24H2+)
+# Position : 0=gauche  1=haut  2=droite  3=bas (defaut)
+$taskbarPosition = 3
 try {
     $key = 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\StuckRects3'
     $s   = (Get-ItemProperty -Path $key -Name Settings -ErrorAction Stop).Settings
-    $s[8] = $s[8] -bor 0x01   # bit 0 = auto-hide ON
+    $s[8]  = $s[8] -bor 0x01      # bit 0 = auto-hide ON
+    $s[12] = $taskbarPosition      # position
     Set-ItemProperty -Path $key -Name Settings -Value $s
 } catch {}
 
