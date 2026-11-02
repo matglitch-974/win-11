@@ -205,6 +205,26 @@ try { Remove-ItemProperty -Path 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion
 # Maintenance automatique Windows
 Set-Reg 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Schedule\Maintenance' 'MaintenanceDisabled' 1
 
+# Filigrane "Activer Windows" (bandeau bas droite) -> masque
+Set-Reg 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SoftwareProtectionPlatform\Activation' 'NotificationDisabled' 1
+Set-Reg 'HKCU:\Control Panel\Desktop'                                                               'PaintDesktopVersion'  0
+
+# Debloquer la personnalisation (fond d'ecran, themes, couleurs) sans activation
+try { Remove-ItemProperty 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\Personalization' 'NoChangingWallPaper'    -Force } catch {}
+try { Remove-ItemProperty 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\Personalization' 'NoLockScreen'           -Force } catch {}
+try { Remove-ItemProperty 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\Personalization' 'PreventChangingTheme'   -Force } catch {}
+try { Remove-ItemProperty 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\Personalization' 'NoColorAppearanceUI'    -Force } catch {}
+try { Remove-ItemProperty 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\Personalization' 'NoWindowMinimizingShortcuts' -Force } catch {}
+
+# Autoriser la personnalisation meme sans activation
+Set-Reg 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize' 'AppsUseLightTheme'         0
+Set-Reg 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize' 'SystemUsesLightTheme'      0
+Set-Reg 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize' 'ColorPrevalence'           0
+
+# Notifications bas droite (Action Center) de securite / activation -> off
+Set-Reg 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Notifications\Settings\Windows.SystemToast.SecurityCenter'  'Enabled' 0
+Set-Reg 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Notifications\Settings\Windows.SystemToast.WindowsUpdate'   'Enabled' 0
+
 Write-Host '  OK' -ForegroundColor Green
 
 # ── 4. Services ───────────────────────────────────────────────────────────────
