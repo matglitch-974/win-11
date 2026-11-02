@@ -139,6 +139,19 @@ Set-Reg 'HKLM:\SOFTWARE\Microsoft\Windows\Windows Error Reporting'              
 # Delivery optimization (P2P Windows Update) -> local seulement
 Set-Reg 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\DeliveryOptimization'          'DODownloadMode'                              1
 
+# Mises a jour : notifier seulement, jamais redemarrer sans accord, pas de pilotes via WU
+Set-Reg 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU' 'NoAutoUpdate'                  0  # pas desactivees : securite ok
+Set-Reg 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU' 'AUOptions'                     2  # notifier avant meme de telecharger
+Set-Reg 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU' 'NoAutoRebootWithLoggedOnUsers'  1  # jamais redemarrer sans accord
+Set-Reg 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU' 'RebootWarningTimeoutEnabled'   1
+Set-Reg 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU' 'RebootWarningTimeout'          60
+Set-Reg 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate'    'ExcludeWUDriversInQualityUpdate' 1 # pas de pilotes via WU
+Set-Reg 'HKLM:\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings'         'ActiveHoursStart'              0  # heures actives = toute la journee
+Set-Reg 'HKLM:\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings'         'ActiveHoursEnd'                23
+Set-Reg 'HKLM:\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings'         'IsActiveHoursEnabled'          1
+Set-Reg 'HKLM:\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings'         'SmartActiveHoursState'         1
+Set-Reg 'HKLM:\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings'         'FlightSettingsMaxPauseDays'    365
+
 # Taches planifiees : telemetrie Microsoft
 Disable-Task '\Microsoft\Windows\Application Experience\'                  'Microsoft Compatibility Appraiser'
 Disable-Task '\Microsoft\Windows\Application Experience\'                  'ProgramDataUpdater'
@@ -198,6 +211,15 @@ Set-Reg 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\UserProfileEngagement' 
 # Applications en arriere-plan : desactiver globalement
 Set-Reg 'HKCU:\Software\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications' 'GlobalUserDisabled' 1
 Set-Reg 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\AppPrivacy'                         'LetAppsRunInBackground' 2
+
+# Auto-masquage de la barre des taches
+# Note : Windows 11 n'autorise la barre qu'en bas nativement. Hors du bas -> ExplorerPatcher requis.
+try {
+    $key = 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\StuckRects3'
+    $s   = (Get-ItemProperty -Path $key -Name Settings -ErrorAction Stop).Settings
+    $s[8] = $s[8] -bor 0x01   # bit 0 = auto-hide ON
+    Set-ItemProperty -Path $key -Name Settings -Value $s
+} catch {}
 
 # OneDrive : retirer du demarrage (sans desinstaller)
 try { Remove-ItemProperty -Path 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run' -Name 'OneDrive' -Force } catch {}
@@ -391,6 +413,45 @@ if ($wg) {
 } else {
     Write-Host '  winget absent — navigateurs a installer manuellement' -ForegroundColor DarkYellow
 }
+
+# Theme AMOLED Noir (noir pur, mode sombre — apparait dans Parametres > Personnalisation > Themes)
+$themeDir = "$env:LOCALAPPDATA\Microsoft\Windows\Themes"
+if (-not (Test-Path $themeDir)) { New-Item $themeDir -ItemType Directory -Force | Out-Null }
+
+$bmpPath = "$themeDir\amoled-noir.bmp"
+try {
+    # BMP 1x1 pixel noir pur (24bpp, 58 octets)
+    [System.IO.File]::WriteAllBytes($bmpPath, [byte[]](
+        0x42,0x4D, 0x3A,0x00,0x00,0x00, 0x00,0x00,0x00,0x00, 0x36,0x00,0x00,0x00,
+        0x28,0x00,0x00,0x00, 0x01,0x00,0x00,0x00, 0x01,0x00,0x00,0x00,
+        0x01,0x00, 0x18,0x00, 0x00,0x00,0x00,0x00, 0x04,0x00,0x00,0x00,
+        0x00,0x00,0x00,0x00, 0x00,0x00,0x00,0x00, 0x00,0x00,0x00,0x00, 0x00,0x00,0x00,0x00,
+        0x00,0x00,0x00,0x00
+    ))
+} catch {}
+
+$themePath = "$themeDir\AMOLED Noir.theme"
+try {
+@"
+[Theme]
+DisplayName=AMOLED Noir
+
+[Control Panel\Desktop]
+Wallpaper=$bmpPath
+WallpaperStyle=0
+TileWallpaper=1
+Pattern=
+
+[VisualStyles]
+Path=%SystemRoot%\resources\themes\Aero\Aero.msstyles
+ColorStyle=NormalColor
+Size=NormalSize
+AutoColorization=0
+SystemMode=Dark
+AppMode=Dark
+"@ | Out-File $themePath -Encoding Unicode -Force
+    Set-Reg 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes' 'CurrentTheme' $themePath 'String'
+} catch {}
 
 # Fonds d'ecran 4K (200-300 MB)
 Remove-Item 'C:\Windows\Web\4K\' -Recurse -Force -ErrorAction SilentlyContinue
