@@ -48,7 +48,7 @@ Write-Host '  win-11  |  github.com/matglitch-974/win-11' -ForegroundColor Cyan
 Write-Host ''
 
 # ── 1. Bloatware ──────────────────────────────────────────────────────────────
-Write-Host '[1/6] Suppression des applications bloatware...' -ForegroundColor Yellow
+Write-Host '[1/8] Suppression des applications bloatware...' -ForegroundColor Yellow
 
 $apps = @(
     'Clipchamp.Clipchamp'
@@ -91,7 +91,7 @@ foreach ($app in $apps) { Remove-App $app }
 Write-Host '  OK' -ForegroundColor Green
 
 # ── 2. Telemetrie & confidentialite ──────────────────────────────────────────
-Write-Host '[2/7] Telemetrie, Bing, confidentialite et taches planifiees...' -ForegroundColor Yellow
+Write-Host '[2/8] Telemetrie, Bing, confidentialite et taches planifiees...' -ForegroundColor Yellow
 
 Set-Reg 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\DataCollection'                'AllowTelemetry'                              0
 Set-Reg 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection' 'AllowTelemetry'                              0
@@ -141,7 +141,7 @@ Set-Reg 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\DeliveryOptimization'        
 
 # Mises a jour : notifier seulement, jamais redemarrer sans accord, pas de pilotes via WU
 Set-Reg 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU' 'NoAutoUpdate'                  0  # pas desactivees : securite ok
-Set-Reg 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU' 'AUOptions'                     2  # notifier avant meme de telecharger
+Set-Reg 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU' 'AUOptions'                     4  # telecharger et installer auto (sans redemarrage force)
 Set-Reg 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU' 'NoAutoRebootWithLoggedOnUsers'  1  # jamais redemarrer sans accord
 Set-Reg 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU' 'RebootWarningTimeoutEnabled'   1
 Set-Reg 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU' 'RebootWarningTimeout'          60
@@ -183,7 +183,7 @@ Disable-Task '\Microsoft\Windows\Windows Defender\'                        'Wind
 Write-Host '  OK' -ForegroundColor Green
 
 # ── 3. Interface & applications background ───────────────────────────────────
-Write-Host '[3/7] Interface, demarrage et applications background...' -ForegroundColor Yellow
+Write-Host '[3/8] Interface, demarrage et applications background...' -ForegroundColor Yellow
 
 Set-Reg 'HKLM:\SOFTWARE\Policies\Microsoft\Dsh'                                  'AllowNewsAndInterests'           0
 Set-Reg 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced'      'TaskbarDa'                       0
@@ -262,7 +262,7 @@ Set-Reg 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Notifications\Settings\
 Write-Host '  OK' -ForegroundColor Green
 
 # ── 4. Services ───────────────────────────────────────────────────────────────
-Write-Host '[4/7] Services...' -ForegroundColor Yellow
+Write-Host '[4/8] Services...' -ForegroundColor Yellow
 
 Disable-Svc 'DiagTrack'        # Telemetrie
 Disable-Svc 'dmwappushservice' # WAP Push
@@ -284,7 +284,7 @@ Disable-Svc 'xbgm'             # Xbox Game Monitoring
 Write-Host '  OK' -ForegroundColor Green
 
 # ── 5. Performance systeme ────────────────────────────────────────────────────
-Write-Host '[5/7] Performance systeme...' -ForegroundColor Yellow
+Write-Host '[5/8] Performance systeme...' -ForegroundColor Yellow
 
 # Plan d'alimentation : Performances ultimes (fallback : Haute performance)
 try {
@@ -354,7 +354,7 @@ Set-Reg 'HKCU:\Control Panel\Mouse' 'MouseThreshold2' '0' 'String'
 Write-Host '  OK' -ForegroundColor Green
 
 # ── 6. Reseau & gaming ────────────────────────────────────────────────────────
-Write-Host '[7/7] Reseau et gaming...' -ForegroundColor Yellow
+Write-Host '[6/8] Reseau et gaming...' -ForegroundColor Yellow
 
 # Network throttling off
 Set-Reg 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile' 'NetworkThrottlingIndex' 0xffffffff
@@ -383,7 +383,7 @@ Set-Reg 'HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\Parameters' 'MaxSOACac
 Write-Host '  OK' -ForegroundColor Green
 
 # ── 6. Navigateurs & nettoyage themes ────────────────────────────────────────
-Write-Host '[6/7] Navigateurs et themes...' -ForegroundColor Yellow
+Write-Host '[7/8] Navigateurs et themes...' -ForegroundColor Yellow
 
 # Internet Explorer : desactiver la fonctionnalite Windows
 try { Disable-WindowsOptionalFeature -Online -FeatureName 'Internet-Explorer-Optional-amd64' -NoRestart | Out-Null } catch {}
@@ -465,6 +465,45 @@ Get-ChildItem 'C:\Windows\Web\Wallpaper\' -Directory -ErrorAction SilentlyContin
 Remove-Item 'C:\Windows\Web\Screen\*' -Force -ErrorAction SilentlyContinue
 
 Write-Host '  OK' -ForegroundColor Green
+
+# ── 8. Windows Update — derniere version ─────────────────────────────────────
+Write-Host '[8/8] Mises a jour Windows...' -ForegroundColor Yellow
+
+try {
+    $session  = New-Object -ComObject Microsoft.Update.Session
+    $searcher = $session.CreateUpdateSearcher()
+    Write-Host '  Recherche en cours...' -ForegroundColor DarkGray
+    $found = $searcher.Search("IsInstalled=0 and Type='Software' and IsHidden=0")
+
+    if ($found.Updates.Count -eq 0) {
+        Write-Host '  Windows est deja a jour.' -ForegroundColor Green
+    } else {
+        Write-Host "  $($found.Updates.Count) mise(s) a jour disponible(s) — telechargement..." -ForegroundColor DarkGray
+
+        $dlCol = New-Object -ComObject Microsoft.Update.UpdateColl
+        $found.Updates | ForEach-Object { $dlCol.Add($_) | Out-Null }
+        $dl = $session.CreateUpdateDownloader()
+        $dl.Updates = $dlCol
+        $dl.Download() | Out-Null
+
+        $instCol = New-Object -ComObject Microsoft.Update.UpdateColl
+        $found.Updates | Where-Object { $_.IsDownloaded } | ForEach-Object { $instCol.Add($_) | Out-Null }
+
+        if ($instCol.Count -gt 0) {
+            Write-Host "  Installation de $($instCol.Count) mise(s) a jour..." -ForegroundColor DarkGray
+            $inst = $session.CreateUpdateInstaller()
+            $inst.Updates = $instCol
+            $r = $inst.Install()
+            if ($r.RebootRequired) {
+                Write-Host '  Redemarrage requis pour finaliser les mises a jour.' -ForegroundColor Yellow
+            } else {
+                Write-Host '  OK' -ForegroundColor Green
+            }
+        }
+    }
+} catch {
+    Write-Host '  Windows Update inaccessible — relancer manuellement.' -ForegroundColor DarkYellow
+}
 
 # ── Redemarrage de l'Explorateur ─────────────────────────────────────────────
 try { Stop-Process -Name explorer -Force; Start-Sleep -Milliseconds 800; Start-Process explorer } catch {}
