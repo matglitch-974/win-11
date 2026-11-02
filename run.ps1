@@ -91,7 +91,7 @@ foreach ($app in $apps) { Remove-App $app }
 Write-Host '  OK' -ForegroundColor Green
 
 # ── 2. Telemetrie & confidentialite ──────────────────────────────────────────
-Write-Host '[2/6] Telemetrie, confidentialite et taches planifiees...' -ForegroundColor Yellow
+Write-Host '[2/7] Telemetrie, Bing, confidentialite et taches planifiees...' -ForegroundColor Yellow
 
 Set-Reg 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\DataCollection'                'AllowTelemetry'                              0
 Set-Reg 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection' 'AllowTelemetry'                              0
@@ -104,6 +104,29 @@ Set-Reg 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windows Search'              
 Set-Reg 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Search'                  'BingSearchEnabled'                           0
 Set-Reg 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Search'                  'CortanaConsent'                              0
 Set-Reg 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Search'                  'DisableWebSearch'                            1
+Set-Reg 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Search'                  'AllowSearchToUseLocation'                    0
+Set-Reg 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Search'                  'SafeSearchMode'                              0
+Set-Reg 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windows Search'                'DisableWebSearch'                            1
+Set-Reg 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windows Search'                'ConnectedSearchUseWeb'                       0
+Set-Reg 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windows Search'                'ConnectedSearchUseWebOverMeteredConnections'  0
+
+# Recherche cloud (compte Microsoft et AAD) -> off
+Set-Reg 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\SearchSettings'          'IsAADCloudSearchEnabled'                     0
+Set-Reg 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\SearchSettings'          'IsMSACloudSearchEnabled'                     0
+Set-Reg 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\SearchSettings'          'IsDeviceSearchHistoryEnabled'                0
+
+# Windows Spotlight (fonds d'ecran et suggestions Bing sur l'ecran de verrouillage et les parametres)
+Set-Reg 'HKCU:\SOFTWARE\Policies\Microsoft\Windows\CloudContent'                  'DisableWindowsSpotlightFeatures'             1
+Set-Reg 'HKCU:\SOFTWARE\Policies\Microsoft\Windows\CloudContent'                  'DisableWindowsSpotlightOnActionCenter'       1
+Set-Reg 'HKCU:\SOFTWARE\Policies\Microsoft\Windows\CloudContent'                  'DisableWindowsSpotlightOnSettings'           1
+Set-Reg 'HKCU:\SOFTWARE\Policies\Microsoft\Windows\CloudContent'                  'DisableWindowsSpotlightWindowsWelcomeExperience' 1
+Set-Reg 'HKCU:\SOFTWARE\Policies\Microsoft\Windows\CloudContent'                  'DisableTailoredExperiencesWithDiagnosticData' 1
+Set-Reg 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\CloudContent'                  'DisableWindowsConsumerFeatures'              1
+Set-Reg 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\CloudContent'                  'DisableCloudOptimizedContent'                1
+
+# Fil d'actualites Bing (widget barre des taches, en plus de TaskbarDa)
+Set-Reg 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windows Feeds'                 'EnableFeeds'                                 0
+
 Set-Reg 'HKCU:\SOFTWARE\Policies\Microsoft\Windows\WindowsCopilot'                'TurnOffWindowsCopilot'                       1
 Set-Reg 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsCopilot'                'TurnOffWindowsCopilot'                       1
 Set-Reg 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\System'                        'EnableActivityFeed'                          0
