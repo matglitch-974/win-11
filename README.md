@@ -1,98 +1,91 @@
 # win-11
 
-Allège et optimise Windows 11 en une commande. Supprime le bloatware, coupe la télémétrie, nettoie l'interface, et pousse les performances au maximum.
+Windows 11 optimisé pour la performance. Un seul moteur, deux usages :
+
+- **Convertir un Windows existant**, réversible à 100 % grâce au journal (`-Restore`).
+- **Générer une ISO** à partir de l'ISO officielle Microsoft, qui applique le même moteur à l'installation.
 
 ---
 
-## Utilisation
+## Convertir ce PC
 
-Ouvrir PowerShell et coller :
+PowerShell, puis :
 
 ```powershell
-irm https://is.gd/win11install|iex
+irm https://is.gd/win11install | iex
 ```
 
-Une fenêtre UAC s'ouvre — cliquer **Oui**. Le script se charge du reste en 6 étapes.
+Ou en local :
 
-> Fonctionne sur Windows 11 (toutes versions). Requiert une connexion internet au premier lancement.
+```powershell
+.\win11.ps1                              # menu
+.\win11.ps1 -Profil Complet
+.\win11.ps1 -Profil Systeme -Extreme
+.\win11.ps1 -Restore                     # annule la dernière exécution
+```
 
----
+## Générer l'ISO
 
-## Ce que le script fait
+```powershell
+winget install Microsoft.WindowsADK       # fournit oscdimg (une fois)
+.\build-iso.ps1 -Iso D:\Win11_x64.iso -Profil Complet
+```
 
-### [1/6] Bloatware supprimé
-Cortana · Teams pré-installé · Bing News/Météo/Search · Xbox App + overlays · Mail & Calendrier · Skype · Phone Link · Clipchamp · Power Automate · Solitaire · Dev Home · Outlook (nouvelle version) · Mixed Reality Portal · Feedback Hub · Maps · Alarmes · Magnétophone · OneConnect · Sticky Notes · Todos
-
-**Ne touche pas :** Calculatrice, Photos, Capture d'écran, Bloc-notes, Paint, Terminal, Store, Windows Security, .NET, VCLibs.
-
----
-
-### [2/6] Télémétrie & Confidentialité
-- Télémétrie → niveau 0 (GPO)
-- Publicité personnalisée, Cortana, Bing, Copilot, historique d'activités → désactivés
-- **24 tâches planifiées Microsoft** désactivées : télémétrie, diagnostics, WinSAT, mémoire, sécurité famille, Defender (scans planifiés seulement — la protection temps réel reste active)
-- Delivery Optimization → local seulement (pas de P2P avec des inconnus)
-
-### [3/7] Interface & Démarrage
-- Widgets, Chat, suggestions, apps silencieuses → désactivés
-- Extensions de fichiers et fichiers cachés → visibles
-- Transparence → désactivée
-- **Applications en arrière-plan → désactivées globalement**
-- **OneDrive retiré du démarrage** (sans désinstaller)
-- Maintenance automatique Windows → désactivée
-
-### [4/7] Services désactivés (16)
-`DiagTrack` · `dmwappushservice` · `PcaSvc` · `WerSvc` · `SysMain (Superfetch)` · `MapsBroker` · `lfsvc` · `RetailDemo` · `RemoteRegistry` · `TrkWks` · `AJRouter` · `Fax` · `XblAuthManager` · `XblGameSave` · `XboxNetApiSvc` · `xbgm`
-
-### [5/7] Performance système
-- **Plan d'alimentation** → Performances ultimes (fallback : Haute performance)
-- Disque, veille, hibernation automatique → désactivés
-- **Hibernation off** → libère de l'espace disque (= taille RAM)
-- Effets visuels → Performance (animations, ombres, aperçus)
-- **Arrêt rapide** : apps/services bloqués tués en 1-2 s au lieu de 5 s
-- Délai démarrage applications boot → 0
-- Priorité processeur → programmes au premier plan
-- Kernel en RAM (`DisablePagingExecutive`)
-- Page file encryption → désactivée
-- NTFS LastAccess + noms 8.3 → désactivés (gain SSD/HDD)
-- HAGS (Hardware-Accelerated GPU Scheduling) → activé
-- Game Mode automatique → activé
-- **Accélération souris → désactivée** (précision constante, essentiel pour le gaming)
-
-### [6/7] Navigateurs & Thèmes
-- **Internet Explorer** → fonctionnalité Windows désactivée
-- **Edge** → désinstallé (via son propre setup + AppX legacy) ; réinstallation automatique bloquée par GPO
-- **Firefox, Tor Browser, Brave** → installés via winget
-- **Fonds d'écran 4K** (`C:\Windows\Web\4K\`) → supprimés (~200–300 MB)
-- **Fonds d'écran thématiques** (Sunrise, Flow, Glow…) → supprimés ; le dossier `Windows` de base est conservé
-- **Images d'écran de verrouillage** → supprimées
-
-### [7/7] Réseau & Gaming
-- Network throttling → désactivé
-- Priorités GPU Priority 8 · CPU Priority 6 · Scheduling High pour les jeux
-- **Nagle désactivé sur toutes les interfaces** réseau (latence TCP réduite)
-- Cache DNS élargi (résolution plus rapide)
+L'ISO produite installe Windows sans TPM, sans Secure Boot et sans compte Microsoft obligatoire. Les applications inutiles sont retirées de l'image avant même l'installation. Au premier démarrage de session, `win11.ps1` s'exécute avec le profil choisi. Le choix du disque reste manuel, par sécurité.
 
 ---
+
+## Profils
+
+| | Système | Complet | Complet OLED |
+|---|:-:|:-:|:-:|
+| Alimentation, CPU, timer, GPU, MSI, services | oui | oui | oui |
+| Defender allégé (protection conservée) | oui | oui | oui |
+| Retrait des applications, Copilot, Recall | | oui | oui |
+| Télémétrie et confidentialité | | oui | oui |
+| Confort : Snap, fin de tâche, volume par appli | | oui | oui |
+| Thème noir pur, barre masquée, écran de veille | | | oui |
+
+Options cumulables :
+
+- `-Extreme` : coupe VBS/HVCI, les mitigations Spectre/Meltdown, l'hyperviseur et Defender.
+- `-Navigateurs` : installe Firefox, Brave et Tor ; Edge n'est retiré que si Firefox s'est bien installé.
+
+## Optimisations à gain mesurable
+
+| Réglage | Effet |
+|---|---|
+| Plan Performances ultimes, core parking off, état CPU min 100 % | Fin de la latence de réveil des cœurs |
+| Power Throttling off | Les processus en arrière-plan (compilation, encodage) ne sont plus bridés |
+| `GlobalTimerResolutionRequests` | Restaure la résolution de timer globale (régularité des images par seconde) |
+| `Win32PrioritySeparation` 0x26 | Quantums courts, premier plan favorisé |
+| Mode MSI : GPU, réseau, NVMe, USB | Moins de latence d'interruption (DPC) |
+| MPO off | Supprime les saccades et écrans noirs liés aux overlays |
+| HAGS on, Game DVR off, Game Mode | Moins de charge CPU côté pilote graphique |
+| USB selective suspend et PCIe ASPM off | Plus de micro-coupures des périphériques |
+| SysMain off, LastAccess off, TRIM hebdomadaire | Moins d'écritures disque |
+| Compression mémoire off (16 Go et plus) | Moins de cycles CPU gaspillés |
+| Defender : CPU plafonné à 15 %, exclusions dev/jeux | Compilation et chargements nettement plus rapides |
+| **Extrême** : VBS/HVCI off | De 5 à 15 % en jeu selon le CPU |
+| **Extrême** : mitigations off | Gain surtout sur les CPU anciens et les I/O |
+
+## Antivirus
+
+Aucun antivirus open source n'égale Defender en protection temps réel sous Windows. ClamAV (GPLv2), le plus sérieux, analyse uniquement à la demande, avec une détection inférieure. Le profil par défaut garde donc Defender, mais allégé. `-Extreme` le coupe et installe ClamAV pour des analyses manuelles. Avant `-Extreme`, désactivez « Protection contre les falsifications » dans Sécurité Windows, faute de quoi Windows bloque la désactivation.
+
+## Volume par application au survol
+
+Le profil Complet installe EarTrumpet (MIT, mixeur par application) et Windhawk. Pour régler le volume d'une application en faisant défiler la molette sur son icône, ouvrez Windhawk puis installez le mod **Taskbar Volume Control Per-App**. Windhawk ne permet pas d'automatiser cette installation.
 
 ## Réversibilité
 
-- **Applications** : se réinstallent depuis le Microsoft Store.
-- **Plan d'alimentation** : `Paramètres → Système → Alimentation` → Équilibré.
-- **Hibernation** : `powercfg -h on` dans une invite admin.
-- **Services** : `services.msc` → relancer et remettre en Automatique.
-- **Registre** : toutes les clés sont dans `HKCU` ou `HKLM\SOFTWARE\Policies` — point de restauration recommandé avant exécution.
+Chaque valeur est sauvegardée avant modification dans `C:\ProgramData\win-11\journal-*.json`. Sont restaurés : le registre, les services, les tâches planifiées, le plan d'alimentation et les réglages de démarrage. Un point de restauration système est aussi créé. Seules les applications supprimées restent à réinstaller depuis le Store.
 
-Créer un point de restauration : `Win+R` → `SystemPropertiesProtection` → *Créer*.
+## Limites connues
 
----
-
-## Inspiré de
-
-- [Win11Debloat](https://github.com/Raphire/Win11Debloat) par **Raphire** (MIT)
+- ISO : les réglages utilisateur s'appliquent au premier compte connecté. Pour un compte ajouté plus tard, relancez `win11.ps1`.
+- `-Extreme` rend inutilisables WSL2, Hyper-V, Docker Desktop et le Sandbox Windows.
 
 ---
 
-## Licence
-
-MIT
+Inspiré de [Win11Debloat](https://github.com/Raphire/Win11Debloat) (Raphire, MIT). Licence MIT.
