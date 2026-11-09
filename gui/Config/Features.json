@@ -1,0 +1,1267 @@
+﻿{
+  "Version": "1.0",
+  "Categories": [
+    {
+      "CategoryId": "Performance",
+      "Name": "Performance",
+      "Icon": "&#xEC4A;"
+    },
+    {
+      "CategoryId": "PrivacySuggestedContent",
+      "Name": "Privacy & Suggested Content",
+      "Icon": "&#xE72E;"
+    },
+    {
+      "CategoryId": "System",
+      "Name": "System",
+      "Icon": "&#xe770;"
+    },
+    {
+      "CategoryId": "StartMenuSearch",
+      "Name": "Start Menu & Search",
+      "Icon": "&#xe8fc;"
+    },
+    {
+      "CategoryId": "AI",
+      "Name": "AI",
+      "Icon": "&#xe794;"
+    },
+    {
+      "CategoryId": "WindowsUpdate",
+      "Name": "Windows Update",
+      "Icon": "&#xe895;"
+    },
+    {
+      "CategoryId": "Taskbar",
+      "Name": "Taskbar",
+      "Icon": "&#xe75b;"
+    },
+    {
+      "CategoryId": "Appearance",
+      "Name": "Appearance",
+      "Icon": "&#xE771;"
+    },
+    {
+      "CategoryId": "FileExplorer",
+      "Name": "File Explorer",
+      "Icon": "&#xec50;"
+    },
+    {
+      "CategoryId": "Gaming",
+      "Name": "Gaming",
+      "Icon": "&#xE7FC;"
+    },
+    {
+      "CategoryId": "MultiTasking",
+      "Name": "Multi-tasking",
+      "Icon": "&#xE7C4;"
+    },
+    {
+      "CategoryId": "OptionalWindowsFeatures",
+      "Name": "Optional Windows Features",
+      "Icon": "&#xefda;"
+    },
+    {
+      "CategoryId": "Other",
+      "Name": "Other",
+      "Icon": "&#xE713;"
+    }
+  ],
+  "UiGroups": [
+    {
+      "GroupId": "DesktopSpotlight",
+      "Category": "Appearance",
+      "Priority": 4,
+      "Values": [
+        {
+          "FeatureIds": [
+            "EnableDesktopSpotlight"
+          ]
+        },
+        {
+          "FeatureIds": [
+            "HideDesktopSpotlightIcon"
+          ]
+        },
+        {
+          "FeatureIds": [
+            "DisableDesktopSpotlight"
+          ]
+        }
+      ]
+    },
+    {
+      "GroupId": "SearchIcon",
+      "Category": "Taskbar",
+      "Priority": 2,
+      "Values": [
+        {
+          "FeatureIds": [
+            "ShowSearchBoxTb"
+          ]
+        },
+        {
+          "FeatureIds": [
+            "ShowSearchLabelTb"
+          ]
+        },
+        {
+          "FeatureIds": [
+            "ShowSearchIconTb"
+          ]
+        },
+        {
+          "FeatureIds": [
+            "HideSearchTb"
+          ]
+        }
+      ]
+    },
+    {
+      "GroupId": "MultiMon",
+      "Category": "Taskbar",
+      "Values": [
+        {
+          "FeatureIds": [
+            "MMTaskbarModeAll"
+          ]
+        },
+        {
+          "FeatureIds": [
+            "MMTaskbarModeMainActive"
+          ]
+        },
+        {
+          "FeatureIds": [
+            "MMTaskbarModeActive"
+          ]
+        }
+      ]
+    },
+    {
+      "GroupId": "CombineButtons",
+      "Category": "Taskbar",
+      "Values": [
+        {
+          "FeatureIds": [
+            "CombineTaskbarAlways"
+          ]
+        },
+        {
+          "FeatureIds": [
+            "CombineTaskbarWhenFull"
+          ]
+        },
+        {
+          "FeatureIds": [
+            "CombineTaskbarNever"
+          ]
+        }
+      ]
+    },
+    {
+      "GroupId": "CombineMMButtons",
+      "Category": "Taskbar",
+      "Values": [
+        {
+          "FeatureIds": [
+            "CombineMMTaskbarAlways"
+          ]
+        },
+        {
+          "FeatureIds": [
+            "CombineMMTaskbarWhenFull"
+          ]
+        },
+        {
+          "FeatureIds": [
+            "CombineMMTaskbarNever"
+          ]
+        }
+      ]
+    },
+    {
+      "GroupId": "ClearStart",
+      "Category": "Start Menu & Search",
+      "Values": [
+        {
+          "FeatureIds": [
+            "ClearStart"
+          ]
+        },
+        {
+          "FeatureIds": [
+            "ClearStartAllUsers"
+          ]
+        }
+      ]
+    },
+    {
+      "GroupId": "ExplorerLocation",
+      "Category": "File Explorer",
+      "Priority": 1,
+      "Values": [
+        {
+          "FeatureIds": [
+            "ExplorerToHome"
+          ]
+        },
+        {
+          "FeatureIds": [
+            "ExplorerToThisPC"
+          ]
+        },
+        {
+          "FeatureIds": [
+            "ExplorerToDownloads"
+          ]
+        },
+        {
+          "FeatureIds": [
+            "ExplorerToOneDrive"
+          ]
+        }
+      ]
+    },
+    {
+      "GroupId": "DriveLetterPosition",
+      "Category": "File Explorer",
+      "Priority": 20,
+      "Values": [
+        {
+          "FeatureIds": [
+            "ShowDriveLettersLast"
+          ]
+        },
+        {
+          "FeatureIds": [
+            "ShowDriveLettersFirst"
+          ]
+        },
+        {
+          "FeatureIds": [
+            "ShowNetworkDriveLettersFirst"
+          ]
+        },
+        {
+          "FeatureIds": [
+            "HideDriveLetters"
+          ]
+        }
+      ]
+    },
+    {
+      "GroupId": "ShowTabsInAltTab",
+      "Category": "Multi-tasking",
+      "Priority": 10,
+      "Values": [
+        {
+          "FeatureIds": [
+            "HideTabsInAltTab"
+          ]
+        },
+        {
+          "FeatureIds": [
+            "Show3TabsInAltTab"
+          ]
+        },
+        {
+          "FeatureIds": [
+            "Show5TabsInAltTab"
+          ]
+        },
+        {
+          "FeatureIds": [
+            "Show20TabsInAltTab"
+          ]
+        }
+      ]
+    },
+    {
+      "GroupId": "StartAllAppsView",
+      "Category": "Start Menu & Search",
+      "Values": [
+        {
+          "FeatureIds": [
+            "DisableStartAllApps"
+          ]
+        },
+        {
+          "FeatureIds": [
+            "StartAllAppsCategory"
+          ]
+        },
+        {
+          "FeatureIds": [
+            "StartAllAppsGrid"
+          ]
+        },
+        {
+          "FeatureIds": [
+            "StartAllAppsList"
+          ]
+        }
+      ]
+    }
+  ],
+  "Features": [
+    {
+      "FeatureId": "RemoveApps",
+      "Category": null,
+      "RegistryKey": null,
+      "RegistryUndoKey": null,
+      "MinVersion": null,
+      "MaxVersion": null
+    },
+    {
+      "FeatureId": "Apps",
+      "Category": null,
+      "RegistryKey": null,
+      "RegistryUndoKey": null,
+      "MinVersion": null,
+      "MaxVersion": null
+    },
+    {
+      "FeatureId": "RemoveGamingApps",
+      "Category": null,
+      "RegistryKey": null,
+      "RegistryUndoKey": null,
+      "MinVersion": null,
+      "MaxVersion": null
+    },
+    {
+      "FeatureId": "RemoveHPApps",
+      "Category": null,
+      "RegistryKey": null,
+      "RegistryUndoKey": null,
+      "MinVersion": null,
+      "MaxVersion": null
+    },
+    {
+      "FeatureId": "CreateRestorePoint",
+      "Category": null,
+      "RegistryKey": null,
+      "RegistryUndoKey": null,
+      "MinVersion": null,
+      "MaxVersion": null
+    },
+    {
+      "FeatureId": "DisableTelemetry",
+      "Category": "Privacy & Suggested Content",
+      "Priority": 1,
+      "RegistryKey": "Disable_Telemetry.reg",
+      "RegistryUndoKey": "Enable_Telemetry.reg",
+      "MinVersion": null,
+      "MaxVersion": null
+    },
+    {
+      "FeatureId": "DisableSuggestions",
+      "Category": "Privacy & Suggested Content",
+      "Priority": 2,
+      "RegistryKey": "Disable_Windows_Suggestions.reg",
+      "RegistryUndoKey": "Enable_Windows_Suggestions.reg",
+      "MinVersion": null,
+      "MaxVersion": null
+    },
+    {
+      "FeatureId": "DisableNotifications",
+      "Category": "System",
+      "RegistryKey": "Disable_Notifications.reg",
+      "RegistryUndoKey": "Enable_Notifications.reg",
+      "MinVersion": null,
+      "MaxVersion": null
+    },
+    {
+      "FeatureId": "DisableLocationServices",
+      "Category": "Privacy & Suggested Content",
+      "Priority": 4,
+      "RegistryKey": "Disable_Location_Services.reg",
+      "RegistryUndoKey": "Enable_Location_Services.reg",
+      "MinVersion": null,
+      "MaxVersion": null
+    },
+    {
+      "FeatureId": "DisableFindMyDevice",
+      "Category": "Privacy & Suggested Content",
+      "Priority": 5,
+      "RegistryKey": "Disable_Find_My_Device.reg",
+      "RegistryUndoKey": "Enable_Find_My_Device.reg",
+      "MinVersion": null,
+      "MaxVersion": null
+    },
+    {
+      "FeatureId": "DisableLockscreenTips",
+      "Category": "Privacy & Suggested Content",
+      "Priority": 6,
+      "RegistryKey": "Disable_Lockscreen_Tips.reg",
+      "RegistryUndoKey": "Enable_Lockscreen_Tips.reg",
+      "MinVersion": null,
+      "MaxVersion": null
+    },
+    {
+      "FeatureId": "EnableDesktopSpotlight",
+      "Category": "Appearance",
+      "RegistryKey": "Enable_Desktop_Spotlight.reg",
+      "RegistryUndoKey": null,
+      "MinVersion": null,
+      "MaxVersion": null
+    },
+    {
+      "FeatureId": "DisableDesktopSpotlight",
+      "Category": "Appearance",
+      "RegistryKey": "Disable_Desktop_Spotlight.reg",
+      "RegistryUndoKey": "Enable_Desktop_Spotlight.reg",
+      "MinVersion": null,
+      "MaxVersion": null
+    },
+    {
+      "FeatureId": "HideDesktopSpotlightIcon",
+      "Category": "Appearance",
+      "RegistryKey": "Hide_Desktop_Spotlight_Icon.reg",
+      "RegistryUndoKey": "Show_Desktop_Spotlight_Icon.reg",
+      "MinVersion": null,
+      "MaxVersion": null
+    },
+    {
+      "FeatureId": "DisableEdgeAds",
+      "Category": "Privacy & Suggested Content",
+      "RegistryKey": "Disable_Edge_Ads_And_Suggestions.reg",
+      "RegistryUndoKey": "Enable_Edge_Ads_And_Suggestions.reg",
+      "MinVersion": null,
+      "MaxVersion": null
+    },
+    {
+      "FeatureId": "DisableCopilot",
+      "Category": "AI",
+      "RegistryKey": "Disable_Copilot.reg",
+      "RegistryUndoKey": "Enable_Copilot.reg",
+      "MinVersion": 22621,
+      "MaxVersion": null
+    },
+    {
+      "FeatureId": "DisableRecall",
+      "Category": "AI",
+      "RegistryKey": "Disable_AI_Recall.reg",
+      "RegistryUndoKey": "Enable_AI_Recall.reg",
+      "MinVersion": 22621,
+      "MaxVersion": null
+    },
+    {
+      "FeatureId": "DisableClickToDo",
+      "Category": "AI",
+      "RegistryKey": "Disable_Click_to_Do.reg",
+      "RegistryUndoKey": "Enable_Click_to_Do.reg",
+      "MinVersion": 22621,
+      "MaxVersion": null
+    },
+    {
+      "FeatureId": "DisableAISvcAutoStart",
+      "Category": "AI",
+      "RegistryKey": "Disable_AI_Service_Auto_Start.reg",
+      "RegistryUndoKey": "Enable_AI_Service_Auto_Start.reg",
+      "MinVersion": 22621,
+      "MaxVersion": null
+    },
+    {
+      "FeatureId": "DisableDVR",
+      "Category": "Gaming",
+      "RegistryKey": "Disable_DVR.reg",
+      "RegistryUndoKey": "Enable_DVR.reg",
+      "MinVersion": null,
+      "MaxVersion": null
+    },
+    {
+      "FeatureId": "DisableGameBarIntegration",
+      "Category": "Gaming",
+      "RegistryKey": "Disable_Game_Bar_Integration.reg",
+      "RegistryUndoKey": "Enable_Game_Bar_Integration.reg",
+      "MinVersion": null,
+      "MaxVersion": null
+    },
+    {
+      "FeatureId": "ClearStart",
+      "Category": "Start Menu & Search",
+      "RegistryKey": null,
+      "RegistryUndoKey": null,
+      "MinVersion": 22621,
+      "MaxVersion": null
+    },
+    {
+      "FeatureId": "ClearStartAllUsers",
+      "Category": "Start Menu & Search",
+      "RegistryKey": null,
+      "RegistryUndoKey": null,
+      "MinVersion": 22621,
+      "MaxVersion": null
+    },
+    {
+      "FeatureId": "ReplaceStart",
+      "Category": null,
+      "RegistryKey": null,
+      "RegistryUndoKey": null,
+      "MinVersion": 22621,
+      "MaxVersion": null
+    },
+    {
+      "FeatureId": "ReplaceStartAllUsers",
+      "Category": null,
+      "RegistryKey": null,
+      "RegistryUndoKey": null,
+      "MinVersion": 22621,
+      "MaxVersion": null
+    },
+    {
+      "FeatureId": "DisableStartRecommended",
+      "Category": "Start Menu & Search",
+      "RegistryKey": "Disable_Start_Recommended.reg",
+      "RegistryUndoKey": "Enable_Start_Recommended.reg",
+      "MinVersion": 22621,
+      "MaxVersion": null
+    },
+    {
+      "FeatureId": "DisableStartAllApps",
+      "Category": "Start Menu & Search",
+      "RegistryKey": "Disable_Start_All_Apps.reg",
+      "RegistryUndoKey": "Enable_Start_All_Apps.reg",
+      "MinVersion": 26200,
+      "MaxVersion": null
+    },
+    {
+      "FeatureId": "DisableStartPhoneLink",
+      "Category": "Start Menu & Search",
+      "RegistryKey": "Disable_Phone_Link_In_Start.reg",
+      "RegistryUndoKey": "Enable_Phone_Link_In_Start.reg",
+      "MinVersion": 22621,
+      "MaxVersion": null
+    },
+    {
+      "FeatureId": "DisableBing",
+      "Category": "Start Menu & Search",
+      "RegistryKey": "Disable_Bing_Cortana_In_Search.reg",
+      "RegistryUndoKey": "Enable_Bing_Cortana_In_Search.reg",
+      "MinVersion": null,
+      "MaxVersion": null
+    },
+    {
+      "FeatureId": "DisableStoreSearchSuggestions",
+      "Category": "Start Menu & Search",
+      "RegistryKey": null,
+      "RegistryUndoKey": null,
+      "MinVersion": 22621,
+      "MaxVersion": null
+    },
+    {
+      "FeatureId": "DisableStartWebView2",
+      "Category": "Start Menu & Search",
+      "RegistryKey": "Disable_Start_WebView2.reg",
+      "RegistryUndoKey": "Enable_Start_WebView2.reg",
+      "RequiresReboot": true,
+      "MinVersion": 22000,
+      "MaxVersion": null
+    },
+    {
+      "FeatureId": "DisableSettings365Ads",
+      "Category": "Privacy & Suggested Content",
+      "RegistryKey": "Disable_Settings_365_Ads.reg",
+      "RegistryUndoKey": "Enable_Settings_365_Ads.reg",
+      "MinVersion": 22000,
+      "MaxVersion": null
+    },
+    {
+      "FeatureId": "DisableSettingsHome",
+      "Category": "Other",
+      "RegistryKey": "Disable_Settings_Home.reg",
+      "RegistryUndoKey": "Enable_Settings_Home.reg",
+      "MinVersion": 22000,
+      "MaxVersion": null
+    },
+    {
+      "FeatureId": "DisableEdgeAI",
+      "Category": "AI",
+      "RegistryKey": "Disable_Edge_AI_Features.reg",
+      "RegistryUndoKey": "Enable_Edge_AI_Features.reg",
+      "MinVersion": 22621,
+      "MaxVersion": null
+    },
+    {
+      "FeatureId": "DisableChromeAI",
+      "Category": "AI",
+      "RegistryKey": "Disable_Chrome_AI_Features.reg",
+      "RegistryUndoKey": "Enable_Chrome_AI_Features.reg",
+      "MinVersion": 22621,
+      "MaxVersion": null
+    },
+    {
+      "FeatureId": "DisablePaintAI",
+      "Category": "AI",
+      "RegistryKey": "Disable_Paint_AI_Features.reg",
+      "RegistryUndoKey": "Enable_Paint_AI_Features.reg",
+      "MinVersion": 22621,
+      "MaxVersion": null
+    },
+    {
+      "FeatureId": "DisableNotepadAI",
+      "Category": "AI",
+      "RegistryKey": "Disable_Notepad_AI_Features.reg",
+      "RegistryUndoKey": "Enable_Notepad_AI_Features.reg",
+      "MinVersion": 22621,
+      "MaxVersion": null
+    },
+    {
+      "FeatureId": "EnableDarkMode",
+      "Category": "Appearance",
+      "RegistryKey": "Enable_Dark_Mode.reg",
+      "RegistryUndoKey": "Enable_Light_Mode.reg",
+      "Priority": 1,
+      "MinVersion": null,
+      "MaxVersion": null
+    },
+    {
+      "FeatureId": "RevertContextMenu",
+      "Category": "System",
+      "RegistryKey": "Disable_Show_More_Options_Context_Menu.reg",
+      "RegistryUndoKey": "Enable_W11_Style_Context_Menu.reg",
+      "MinVersion": 22000,
+      "MaxVersion": null
+    },
+    {
+      "FeatureId": "DisableMouseAcceleration",
+      "Category": "System",
+      "RegistryKey": "Disable_Enhance_Pointer_Precision.reg",
+      "RegistryUndoKey": "Enable_Enhance_Pointer_Precision.reg",
+      "RequiresReboot": true,
+      "MinVersion": null,
+      "MaxVersion": null
+    },
+    {
+      "FeatureId": "DisableStickyKeys",
+      "Category": "System",
+      "RegistryKey": "Disable_Sticky_Keys_Shortcut.reg",
+      "RegistryUndoKey": "Enable_Sticky_Keys_Shortcut.reg",
+      "RequiresReboot": true,
+      "MinVersion": 26100,
+      "MaxVersion": null
+    },
+    {
+      "FeatureId": "DisableWindowSnapping",
+      "Category": "Multi-tasking",
+      "Priority": 1,
+      "RegistryKey": "Disable_Window_Snapping.reg",
+      "RegistryUndoKey": "Enable_Window_Snapping.reg",
+      "RequiresReboot": true,
+      "MinVersion": null,
+      "MaxVersion": null
+    },
+    {
+      "FeatureId": "DisableSnapAssist",
+      "Category": "Multi-tasking",
+      "Priority": 2,
+      "RegistryKey": "Disable_Snap_Assist.reg",
+      "RegistryUndoKey": "Enable_Snap_Assist.reg",
+      "MinVersion": 22000,
+      "MaxVersion": null
+    },
+    {
+      "FeatureId": "DisableSnapLayouts",
+      "Category": "Multi-tasking",
+      "Priority": 3,
+      "RegistryKey": "Disable_Snap_Layouts.reg",
+      "RegistryUndoKey": "Enable_Snap_Layouts.reg",
+      "MinVersion": 22000,
+      "MaxVersion": null
+    },
+    {
+      "FeatureId": "HideTabsInAltTab",
+      "Category": "Multi-tasking",
+      "RegistryKey": "Hide_Tabs_In_Alt_Tab.reg",
+      "RegistryUndoKey": null,
+      "MinVersion": 22000,
+      "MaxVersion": null
+    },
+    {
+      "FeatureId": "Show3TabsInAltTab",
+      "Category": "Multi-tasking",
+      "RegistryKey": "Show_3_Tabs_In_Alt_Tab.reg",
+      "RegistryUndoKey": null,
+      "MinVersion": 22000,
+      "MaxVersion": null
+    },
+    {
+      "FeatureId": "Show5TabsInAltTab",
+      "Category": "Multi-tasking",
+      "RegistryKey": "Show_5_Tabs_In_Alt_Tab.reg",
+      "RegistryUndoKey": null,
+      "MinVersion": 22000,
+      "MaxVersion": null
+    },
+    {
+      "FeatureId": "Show20TabsInAltTab",
+      "Category": "Multi-tasking",
+      "RegistryKey": "Show_20_Tabs_In_Alt_Tab.reg",
+      "RegistryUndoKey": null,
+      "MinVersion": 22000,
+      "MaxVersion": null
+    },
+    {
+      "FeatureId": "TaskbarAlignLeft",
+      "Category": "Taskbar",
+      "Priority": 1,
+      "RegistryKey": "Align_Taskbar_Left.reg",
+      "RegistryUndoKey": "Align_Taskbar_Center.reg",
+      "MinVersion": 22000,
+      "MaxVersion": null
+    },
+    {
+      "FeatureId": "HideSearchTb",
+      "Category": "Taskbar",
+      "RegistryKey": "Hide_Search_Taskbar.reg",
+      "RegistryUndoKey": "Show_Search_Box.reg",
+      "MinVersion": 22000,
+      "MaxVersion": null
+    },
+    {
+      "FeatureId": "ShowSearchIconTb",
+      "Category": "Taskbar",
+      "RegistryKey": "Show_Search_Icon.reg",
+      "RegistryUndoKey": "Show_Search_Box.reg",
+      "MinVersion": 22000,
+      "MaxVersion": null
+    },
+    {
+      "FeatureId": "ShowSearchLabelTb",
+      "Category": "Taskbar",
+      "RegistryKey": "Show_Search_Icon_And_Label.reg",
+      "RegistryUndoKey": "Show_Search_Box.reg",
+      "MinVersion": 22000,
+      "MaxVersion": null
+    },
+    {
+      "FeatureId": "ShowSearchBoxTb",
+      "Category": "Taskbar",
+      "RegistryKey": "Show_Search_Box.reg",
+      "RegistryUndoKey": null,
+      "MinVersion": 22000,
+      "MaxVersion": null
+    },
+    {
+      "FeatureId": "HideTaskview",
+      "Category": "Taskbar",
+      "Priority": 3,
+      "RegistryKey": "Hide_Taskview_Taskbar.reg",
+      "RegistryUndoKey": "Show_Taskview_Taskbar.reg",
+      "MinVersion": 22000,
+      "MaxVersion": null
+    },
+    {
+      "FeatureId": "DisableWidgets",
+      "Category": "Taskbar",
+      "Priority": 4,
+      "RegistryKey": null,
+      "RegistryUndoKey": null,
+      "DisableWhenApplied": true,
+      "MinVersion": null,
+      "MaxVersion": null
+    },
+    {
+      "FeatureId": "HideChat",
+      "Category": "Taskbar",
+      "Priority": 5,
+      "RegistryKey": "Disable_Chat_Taskbar.reg",
+      "RegistryUndoKey": "Enable_Chat_Taskbar.reg",
+      "MinVersion": null,
+      "MaxVersion": 22621
+    },
+    {
+      "FeatureId": "DisableStorageSense",
+      "Category": "System",
+      "RegistryKey": "Disable_Storage_Sense.reg",
+      "RegistryUndoKey": "Enable_Storage_Sense.reg",
+      "MinVersion": 22000,
+      "MaxVersion": null
+    },
+    {
+      "FeatureId": "DisableFastStartup",
+      "Category": "System",
+      "RegistryKey": "Disable_Fast_Startup.reg",
+      "RegistryUndoKey": "Enable_Fast_Startup.reg",
+      "MinVersion": null,
+      "MaxVersion": null
+    },
+    {
+      "FeatureId": "DisableBitlockerAutoEncryption",
+      "Category": "System",
+      "RegistryKey": "Disable_Bitlocker_Auto_Encryption.reg",
+      "RegistryUndoKey": "Enable_Bitlocker_Auto_Encryption.reg",
+      "MinVersion": 22000,
+      "MaxVersion": null
+    },
+    {
+      "FeatureId": "DisableModernStandbyNetworking",
+      "Category": "System",
+      "RegistryKey": "Disable_Modern_Standby_Networking.reg",
+      "RegistryUndoKey": "Enable_Modern_Standby_Networking.reg",
+      "MinVersion": 22000,
+      "MaxVersion": null
+    },
+    {
+      "FeatureId": "EnableEndTask",
+      "Category": "Taskbar",
+      "Priority": 6,
+      "RegistryKey": "Enable_End_Task.reg",
+      "RegistryUndoKey": "Disable_End_Task.reg",
+      "MinVersion": 22631,
+      "MaxVersion": null
+    },
+    {
+      "FeatureId": "EnableLastActiveClick",
+      "Category": "Taskbar",
+      "Priority": 7,
+      "RegistryKey": "Enable_Last_Active_Click.reg",
+      "RegistryUndoKey": "Disable_Last_Active_Click.reg",
+      "MinVersion": 22000,
+      "MaxVersion": null
+    },
+    {
+      "FeatureId": "CombineTaskbarAlways",
+      "Category": "Taskbar",
+      "RegistryKey": "Combine_Taskbar_Always.reg",
+      "RegistryUndoKey": null,
+      "MinVersion": 22000,
+      "MaxVersion": null
+    },
+    {
+      "FeatureId": "CombineMMTaskbarAlways",
+      "Category": "Taskbar",
+      "RegistryKey": "Combine_MMTaskbar_Always.reg",
+      "RegistryUndoKey": null,
+      "MinVersion": 22000,
+      "MaxVersion": null
+    },
+    {
+      "FeatureId": "CombineTaskbarWhenFull",
+      "Category": "Taskbar",
+      "RegistryKey": "Combine_Taskbar_When_Full.reg",
+      "RegistryUndoKey": "Combine_Taskbar_Always.reg",
+      "MinVersion": 22000,
+      "MaxVersion": null
+    },
+    {
+      "FeatureId": "CombineMMTaskbarWhenFull",
+      "Category": "Taskbar",
+      "RegistryKey": "Combine_MMTaskbar_When_Full.reg",
+      "RegistryUndoKey": "Combine_MMTaskbar_Always.reg",
+      "MinVersion": 22000,
+      "MaxVersion": null
+    },
+    {
+      "FeatureId": "CombineTaskbarNever",
+      "Category": "Taskbar",
+      "RegistryKey": "Combine_Taskbar_Never.reg",
+      "RegistryUndoKey": "Combine_Taskbar_Always.reg",
+      "MinVersion": 22000,
+      "MaxVersion": null
+    },
+    {
+      "FeatureId": "CombineMMTaskbarNever",
+      "Category": "Taskbar",
+      "RegistryKey": "Combine_MMTaskbar_Never.reg",
+      "RegistryUndoKey": "Combine_MMTaskbar_Always.reg",
+      "MinVersion": 22000,
+      "MaxVersion": null
+    },
+    {
+      "FeatureId": "MMTaskbarModeAll",
+      "Category": "Taskbar",
+      "RegistryKey": "MMTaskbarMode_All.reg",
+      "RegistryUndoKey": null,
+      "MinVersion": 22000,
+      "MaxVersion": null
+    },
+    {
+      "FeatureId": "MMTaskbarModeMainActive",
+      "Category": "Taskbar",
+      "RegistryKey": "MMTaskbarMode_Main_Active.reg",
+      "RegistryUndoKey": "MMTaskbarMode_All.reg",
+      "MinVersion": 22000,
+      "MaxVersion": null
+    },
+    {
+      "FeatureId": "MMTaskbarModeActive",
+      "Category": "Taskbar",
+      "RegistryKey": "MMTaskbarMode_Active.reg",
+      "RegistryUndoKey": "MMTaskbarMode_All.reg",
+      "MinVersion": 22000,
+      "MaxVersion": null
+    },
+    {
+      "FeatureId": "ExplorerToHome",
+      "Category": "File Explorer",
+      "RegistryKey": "Launch_File_Explorer_To_Home.reg",
+      "RegistryUndoKey": null,
+      "MinVersion": null,
+      "MaxVersion": null
+    },
+    {
+      "FeatureId": "ExplorerToThisPC",
+      "Category": "File Explorer",
+      "RegistryKey": "Launch_File_Explorer_To_This_PC.reg",
+      "RegistryUndoKey": "Launch_File_Explorer_To_Home.reg",
+      "MinVersion": null,
+      "MaxVersion": null
+    },
+    {
+      "FeatureId": "ExplorerToDownloads",
+      "Category": "File Explorer",
+      "RegistryKey": "Launch_File_Explorer_To_Downloads.reg",
+      "RegistryUndoKey": "Launch_File_Explorer_To_Home.reg",
+      "MinVersion": null,
+      "MaxVersion": null
+    },
+    {
+      "FeatureId": "ExplorerToOneDrive",
+      "Category": "File Explorer",
+      "RegistryKey": "Launch_File_Explorer_To_OneDrive.reg",
+      "RegistryUndoKey": "Launch_File_Explorer_To_Home.reg",
+      "MinVersion": null,
+      "MaxVersion": null
+    },
+    {
+      "FeatureId": "ShowKnownFileExt",
+      "Category": "File Explorer",
+      "Priority": 2,
+      "RegistryKey": "Show_Extensions_For_Known_File_Types.reg",
+      "RegistryUndoKey": "Hide_Extensions_For_Known_File_Types.reg",
+      "MinVersion": null,
+      "MaxVersion": null
+    },
+    {
+      "FeatureId": "ShowHiddenFolders",
+      "Category": "File Explorer",
+      "Priority": 3,
+      "RegistryKey": "Show_Hidden_Folders.reg",
+      "RegistryUndoKey": "Hide_Hidden_Folders.reg",
+      "MinVersion": null,
+      "MaxVersion": null
+    },
+    {
+      "FeatureId": "HideDupliDrive",
+      "Category": "File Explorer",
+      "Priority": 4,
+      "RegistryKey": "Hide_duplicate_removable_drives_from_navigation_pane_of_File_Explorer.reg",
+      "RegistryUndoKey": "Show_duplicate_removable_drives_in_navigation_pane_of_File_Explorer.reg",
+      "MinVersion": null,
+      "MaxVersion": null
+    },
+    {
+      "FeatureId": "HideHome",
+      "Category": "File Explorer",
+      "Priority": 5,
+      "RegistryKey": "Hide_Home_from_Explorer.reg",
+      "RegistryUndoKey": "Show_Home_in_Explorer.reg",
+      "MinVersion": 22000,
+      "MaxVersion": null
+    },
+    {
+      "FeatureId": "HideGallery",
+      "Category": "File Explorer",
+      "Priority": 6,
+      "RegistryKey": "Hide_Gallery_from_Explorer.reg",
+      "RegistryUndoKey": "Show_Gallery_in_Explorer.reg",
+      "MinVersion": 22000,
+      "MaxVersion": null
+    },
+    {
+      "FeatureId": "DisableTransparency",
+      "Category": "Appearance",
+      "RegistryKey": "Disable_Transparency.reg",
+      "RegistryUndoKey": "Enable_Transparency.reg",
+      "Priority": 2,
+      "MinVersion": null,
+      "MaxVersion": null
+    },
+    {
+      "FeatureId": "DisableAnimations",
+      "Category": "Appearance",
+      "RegistryKey": "Disable_Animations.reg",
+      "RegistryUndoKey": "Enable_Animations.reg",
+      "Priority": 3,
+      "RequiresReboot": true,
+      "MinVersion": null,
+      "MaxVersion": null
+    },
+    {
+      "FeatureId": "DisableUpdateASAP",
+      "Category": "Windows Update",
+      "RegistryKey": "Disable_Update_ASAP.reg",
+      "RegistryUndoKey": "Enable_Update_ASAP.reg",
+      "MinVersion": null,
+      "MaxVersion": null
+    },
+    {
+      "FeatureId": "PreventUpdateAutoReboot",
+      "Category": "Windows Update",
+      "RegistryKey": "Prevent_Auto_Reboot.reg",
+      "RegistryUndoKey": "Allow_Auto_Reboot.reg",
+      "MinVersion": null,
+      "MaxVersion": null
+    },
+    {
+      "FeatureId": "DisableDriverUpdates",
+      "Category": "Windows Update",
+      "RegistryKey": "Disable_Driver_Updates.reg",
+      "RegistryUndoKey": "Enable_Driver_Updates.reg",
+      "RequiresReboot": true,
+      "MinVersion": null,
+      "MaxVersion": null
+    },
+    {
+      "FeatureId": "DisableDeliveryOptimization",
+      "Category": "Windows Update",
+      "RegistryKey": "Disable_Delivery_Optimization.reg",
+      "RegistryUndoKey": "Enable_Delivery_Optimization.reg",
+      "MinVersion": null,
+      "MaxVersion": null
+    },
+    {
+      "FeatureId": "DisableDeviceAutoAppDownload",
+      "Category": "Windows Update",
+      "RegistryKey": "Disable_Device_Auto_App_Download.reg",
+      "RegistryUndoKey": "Enable_Device_Auto_App_Download.reg",
+      "MinVersion": null,
+      "MaxVersion": null
+    },
+    {
+      "FeatureId": "ForceRemoveEdge",
+      "Category": null,
+      "RegistryKey": null,
+      "RegistryUndoKey": null,
+      "MinVersion": null,
+      "MaxVersion": null
+    },
+    {
+      "FeatureId": "HideOnedrive",
+      "Category": "File Explorer",
+      "Priority": 7,
+      "RegistryKey": "Hide_Onedrive_Folder.reg",
+      "RegistryUndoKey": "Show_Onedrive_Folder.reg",
+      "MinVersion": null,
+      "MaxVersion": null
+    },
+    {
+      "FeatureId": "Hide3dObjects",
+      "Category": "File Explorer",
+      "Priority": 8,
+      "RegistryKey": "Hide_3D_Objects_Folder.reg",
+      "RegistryUndoKey": "Show_3D_Objects_Folder.reg",
+      "MinVersion": null,
+      "MaxVersion": 21999
+    },
+    {
+      "FeatureId": "HideMusic",
+      "Category": "File Explorer",
+      "Priority": 9,
+      "RegistryKey": "Hide_Music_Folder.reg",
+      "RegistryUndoKey": "Show_Music_Folder.reg",
+      "MinVersion": null,
+      "MaxVersion": 21999
+    },
+    {
+      "FeatureId": "AddFoldersToThisPC",
+      "Category": "File Explorer",
+      "Priority": 10,
+      "RegistryKey": "Add_All_Folders_Under_This_PC.reg",
+      "RegistryUndoKey": "Remove_All_Folders_Under_This_PC.reg",
+      "MinVersion": 22000,
+      "MaxVersion": null
+    },
+    {
+      "FeatureId": "HideIncludeInLibrary",
+      "Category": "File Explorer",
+      "Priority": 11,
+      "RegistryKey": "Disable_Include_in_library_from_context_menu.reg",
+      "RegistryUndoKey": "Enable_Include_in_library_in_context_menu.reg",
+      "MinVersion": null,
+      "MaxVersion": 21999
+    },
+    {
+      "FeatureId": "HideGiveAccessTo",
+      "Category": "File Explorer",
+      "Priority": 12,
+      "RegistryKey": "Disable_Give_access_to_context_menu.reg",
+      "RegistryUndoKey": "Enable_Give_access_to_context_menu.reg",
+      "MinVersion": null,
+      "MaxVersion": 21999
+    },
+    {
+      "FeatureId": "HideShare",
+      "Category": "File Explorer",
+      "Priority": 13,
+      "RegistryKey": "Disable_Share_from_context_menu.reg",
+      "RegistryUndoKey": "Enable_Share_in_context_menu.reg",
+      "MinVersion": null,
+      "MaxVersion": 21999
+    },
+    {
+      "FeatureId": "DisableBraveBloat",
+      "Category": "Other",
+      "RegistryKey": "Disable_Brave_Bloat.reg",
+      "RegistryUndoKey": "Enable_Brave_Bloat.reg",
+      "MinVersion": null,
+      "MaxVersion": null
+    },
+    {
+      "FeatureId": "EnableWindowsSandbox",
+      "Category": "Optional Windows Features",
+      "RegistryKey": null,
+      "RegistryUndoKey": null,
+      "RequiresReboot": true,
+      "MinVersion": 22483,
+      "MaxVersion": null
+    },
+    {
+      "FeatureId": "EnableWindowsSubsystemForLinux",
+      "Category": "Optional Windows Features",
+      "RegistryKey": null,
+      "RegistryUndoKey": null,
+      "RequiresReboot": true,
+      "MinVersion": 22000,
+      "MaxVersion": null
+    },
+    {
+      "FeatureId": "ShowDriveLettersFirst",
+      "Category": "File Explorer",
+      "RegistryKey": "Show_Drive_Letters_First.reg",
+      "RegistryUndoKey": "Show_Drive_Letters_Last.reg",
+      "MinVersion": null,
+      "MaxVersion": null
+    },
+    {
+      "FeatureId": "ShowDriveLettersLast",
+      "Category": "File Explorer",
+      "RegistryKey": "Show_Drive_Letters_Last.reg",
+      "RegistryUndoKey": null,
+      "MinVersion": null,
+      "MaxVersion": null
+    },
+    {
+      "FeatureId": "ShowNetworkDriveLettersFirst",
+      "Category": "File Explorer",
+      "RegistryKey": "Show_Network_Drive_Letters_First.reg",
+      "RegistryUndoKey": "Show_Drive_Letters_Last.reg",
+      "MinVersion": null,
+      "MaxVersion": null
+    },
+    {
+      "FeatureId": "HideDriveLetters",
+      "Category": "File Explorer",
+      "RegistryKey": "Hide_Drive_Letters.reg",
+      "RegistryUndoKey": "Show_Drive_Letters_Last.reg",
+      "MinVersion": null,
+      "MaxVersion": null
+    },
+    {
+      "FeatureId": "StartAllAppsCategory",
+      "Category": "Start Menu & Search",
+      "RegistryKey": "Start_AllApps_Category.reg",
+      "RegistryUndoKey": null,
+      "MinVersion": 26200,
+      "MaxVersion": null
+    },
+    {
+      "FeatureId": "StartAllAppsGrid",
+      "Category": "Start Menu & Search",
+      "RegistryKey": "Start_AllApps_Grid.reg",
+      "RegistryUndoKey": "Start_AllApps_Category.reg",
+      "MinVersion": 26200,
+      "MaxVersion": null
+    },
+    {
+      "FeatureId": "StartAllAppsList",
+      "Category": "Start Menu & Search",
+      "RegistryKey": "Start_AllApps_List.reg",
+      "RegistryUndoKey": "Start_AllApps_Category.reg",
+      "MinVersion": 26200,
+      "MaxVersion": null
+    },
+    {
+      "FeatureId": "W11_Power",
+      "Category": "Performance",
+      "RegistryKey": null,
+      "RegistryUndoKey": null,
+      "Priority": 1,
+      "RequiresReboot": true,
+      "MinVersion": null,
+      "MaxVersion": null
+    },
+    {
+      "FeatureId": "W11_Gpu",
+      "Category": "Performance",
+      "RegistryKey": null,
+      "RegistryUndoKey": null,
+      "Priority": 2,
+      "RequiresReboot": true,
+      "MinVersion": null,
+      "MaxVersion": null
+    },
+    {
+      "FeatureId": "W11_Storage",
+      "Category": "Performance",
+      "RegistryKey": null,
+      "RegistryUndoKey": null,
+      "Priority": 3,
+      "RequiresReboot": true,
+      "MinVersion": null,
+      "MaxVersion": null
+    },
+    {
+      "FeatureId": "W11_Services",
+      "Category": "Performance",
+      "RegistryKey": null,
+      "RegistryUndoKey": null,
+      "Priority": 4,
+      "RequiresReboot": true,
+      "MinVersion": null,
+      "MaxVersion": null
+    },
+    {
+      "FeatureId": "W11_DefenderLight",
+      "Category": "Performance",
+      "RegistryKey": null,
+      "RegistryUndoKey": null,
+      "Priority": 5,
+      "RequiresReboot": true,
+      "MinVersion": null,
+      "MaxVersion": null
+    },
+    {
+      "FeatureId": "W11_Comfort",
+      "Category": "Performance",
+      "RegistryKey": null,
+      "RegistryUndoKey": null,
+      "Priority": 6,
+      "RequiresReboot": true,
+      "MinVersion": null,
+      "MaxVersion": null
+    },
+    {
+      "FeatureId": "W11_Oled",
+      "Category": "Performance",
+      "RegistryKey": null,
+      "RegistryUndoKey": null,
+      "Priority": 7,
+      "RequiresReboot": true,
+      "MinVersion": null,
+      "MaxVersion": null
+    },
+    {
+      "FeatureId": "W11_Extreme",
+      "Category": "Performance",
+      "RegistryKey": null,
+      "RegistryUndoKey": null,
+      "Priority": 8,
+      "RequiresReboot": true,
+      "MinVersion": null,
+      "MaxVersion": null
+    }
+  ]
+}

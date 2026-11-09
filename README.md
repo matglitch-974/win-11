@@ -21,8 +21,16 @@ Ou en local :
 .\win11.ps1                              # menu
 .\win11.ps1 -Profil Complet
 .\win11.ps1 -Profil Systeme -Extreme
+.\win11.ps1 -Groupes Power,Gpu,Comfort   # personnalisé, sans menu
 .\win11.ps1 -Restore                     # annule la dernière exécution
 ```
+
+Le menu propose quatre choix : **Système**, **Complet**, **Complet OLED** et **Personnalisé**. Personnalisé se décline en deux modes :
+
+- **Console** : liste numérotée des groupes, on tape les numéros voulus.
+- **Interface graphique** : l'interface de [Win11Debloat](https://github.com/Raphire/Win11Debloat) (MIT), intégrée dans `gui/`. Elle gagne une catégorie **Performance (win-11)** qui pilote les groupes du moteur, en plus de tous les réglages d'origine de Win11Debloat.
+
+Groupes disponibles : `Power`, `Gpu`, `Storage`, `Services`, `UpdatePolicy`, `DefenderLight`, `Debloat`, `Privacy`, `Comfort`, `Oled`, `Browsers`, `Extreme`.
 
 ## Générer l'ISO
 
@@ -88,4 +96,4 @@ Chaque valeur est sauvegardée avant modification dans `C:\ProgramData\win-11\jo
 
 ---
 
-Inspiré de [Win11Debloat](https://github.com/Raphire/Win11Debloat) (Raphire, MIT). Licence MIT.
+Interface graphique : [Win11Debloat](https://github.com/Raphire/Win11Debloat) par Raphire, licence MIT (voir `gui/LICENSE`). Licence du projet : MIT.

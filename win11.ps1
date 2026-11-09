@@ -22,6 +22,10 @@
 .PARAMETER Navigateurs
     Desinstalle Edge et installe Firefox, Brave, Tor Browser.
 
+.PARAMETER Groupes
+    Personnalise : liste separee par des virgules parmi
+    Power, Gpu, Storage, Services, DefenderLight, UpdatePolicy, Debloat, Privacy, Comfort, Oled, Browsers, Extreme.
+
 .PARAMETER Restore
     Restaure depuis le dernier journal (ou -Journal <chemin>).
 
@@ -29,6 +33,7 @@
     .\win11.ps1                         # menu
     .\win11.ps1 -Profil Complet
     .\win11.ps1 -Profil Systeme -Extreme -Silencieux
+    .\win11.ps1 -Groupes Power,Gpu,Comfort
     .\win11.ps1 -Restore
 #>
 [CmdletBinding()]
@@ -40,7 +45,8 @@ param(
     [switch]$SansMisesAJour,
     [switch]$Silencieux,
     [switch]$Restore,
-    [string]$Journal
+    [string]$Journal,
+    [string]$Groupes
 )
 
 Set-StrictMode -Off
@@ -488,6 +494,22 @@ function Invoke-Restore([string]$File) {
     Write-Host 'Restauration terminee. Redemarrez. (Les applications supprimees se reinstallent depuis le Store.)' -ForegroundColor Green
 }
 
+# Ordre d'execution et descriptions (menu Personnalise)
+$Script:GroupList = @(
+    @{ Id = 'Power';         Desc = 'Alimentation, core parking, timer, priorites CPU' }
+    @{ Id = 'Gpu';           Desc = 'HAGS, MPO off, Game DVR off, interruptions MSI' }
+    @{ Id = 'Storage';       Desc = 'SysMain, NTFS, TRIM, compression memoire' }
+    @{ Id = 'Services';      Desc = 'Services et taches de fond inutiles' }
+    @{ Id = 'UpdatePolicy';  Desc = 'Windows Update sans pilotes ni redemarrage force' }
+    @{ Id = 'DefenderLight'; Desc = 'Defender allege (protection conservee)' }
+    @{ Id = 'Debloat';       Desc = 'Applications, Copilot, Recall' }
+    @{ Id = 'Privacy';       Desc = 'Telemetrie et confidentialite' }
+    @{ Id = 'Comfort';       Desc = 'Snap, fin de tache, volume par application' }
+    @{ Id = 'Oled';          Desc = 'Theme noir pur pour ecran OLED' }
+    @{ Id = 'Browsers';      Desc = 'Firefox, Brave, Tor ; Edge retire' }
+    @{ Id = 'Extreme';       Desc = 'VBS, mitigations, hyperviseur, Defender off' }
+)
+
 # ══════════════════════════════════════════════════════════════════════════════
 #  MENU ET EXECUTION
 # ══════════════════════════════════════════════════════════════════════════════
@@ -501,15 +523,43 @@ if (-not $Profil) {
     Write-Host '  1  Systeme        performances uniquement, rien de visuel ni d''applications'
     Write-Host '  2  Complet        Systeme + debloat + confidentialite + confort'
     Write-Host '  3  Complet OLED   Complet + theme noir pur pour ecran OLED'
+    Write-Host '  4  Personnalise   choix groupe par groupe (console ou interface graphique)'
     Write-Host '  R  Restaurer      annule la derniere optimisation'
     Write-Host ''
     switch ((Read-Host '  Choix').Trim().ToUpper()) {
         '1' { $Profil = 'Systeme' }
         '2' { $Profil = 'Complet' }
         '3' { $Profil = 'CompletOLED' }
+        '4' { $Profil = 'Personnalise' }
         'R' { Invoke-Restore $null; exit }
         default { exit }
     }
+}
+
+if ($Profil -eq 'Personnalise') {
+    Write-Host ''
+    Write-Host '  1  Console'
+    Write-Host '  2  Interface graphique (base Win11Debloat de Raphire)'
+    if ((Read-Host '  Choix').Trim() -eq '2') {
+        $gui = Join-Path $PSScriptRoot 'gui\Win11Debloat.ps1'
+        if (-not (Test-Path $gui)) { Write-Host '  Dossier gui introuvable : lancez depuis le depot complet.' -ForegroundColor Red; exit 1 }
+        & powershell -NoProfile -ExecutionPolicy Bypass -File $gui
+        exit
+    }
+    Write-Host ''
+    $i = 0
+    foreach ($g in $Script:GroupList) { $i++; Write-Host ("  {0,2}  {1,-14} {2}" -f $i, $g.Id, $g.Desc) }
+    Write-Host ''
+    $sel = Read-Host '  Numeros separes par des virgules (ex : 1,2,3,8)'
+    $ids = foreach ($n in ($sel -split '[,; ]+' | Where-Object { $_ -match '^\d+$' })) {
+        $idx = [int]$n - 1
+        if ($idx -ge 0 -and $idx -lt $Script:GroupList.Count) { $Script:GroupList[$idx].Id }
+    }
+    if (-not $ids) { exit }
+    $Groupes = $ids -join ','
+}
+
+if (-not $Groupes -and -not $Silencieux -and $PSBoundParameters.Count -eq 0) {
     Write-Host ''
     Write-Host '  Mode EXTREME : VBS, mitigations CPU et Defender coupes. Gain de 5 a 15 % en jeu,' -ForegroundColor DarkYellow
     Write-Host '  securite reduite, WSL2/Hyper-V/Docker inutilisables.' -ForegroundColor DarkYellow
@@ -517,31 +567,30 @@ if (-not $Profil) {
     if ((Read-Host '  Remplacer Edge par Firefox/Brave/Tor ? (o/N)') -match '^[oOyY]') { $Navigateurs = $true }
 }
 
+# Profils -> groupes
+if (-not $Groupes) {
+    $list = @('Power', 'Gpu', 'Storage', 'Services', 'UpdatePolicy')
+    if (-not $Extreme) { $list += 'DefenderLight' }
+    if ($Profil -in 'Complet', 'CompletOLED') { $list += 'Debloat', 'Privacy', 'Comfort' }
+    if ($Profil -eq 'CompletOLED') { $list += 'Oled' }
+    if ($Navigateurs) { $list += 'Browsers' }
+    if ($Extreme)     { $list += 'Extreme' }
+    $Groupes = $list -join ','
+}
+$selected = @($Groupes -split '[,; ]+' | Where-Object { $_ })
+$unknown  = $selected | Where-Object { $_ -notin $Script:GroupList.Id }
+if ($unknown) { Write-Host "Groupe(s) inconnu(s) : $($unknown -join ', ')" -ForegroundColor Red; exit 1 }
+
 Write-Host ''
-Write-Host "  Profil : $Profil$(if ($Extreme) { ' + Extreme' })" -ForegroundColor Cyan
+Write-Host "  Groupes : $($selected -join ', ')" -ForegroundColor Cyan
 
 # Point de restauration systeme (filet supplementaire au journal)
 try {
     Enable-ComputerRestore -Drive "$env:SystemDrive\" -ErrorAction Stop
-    Set-Reg 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SystemRestore' 'SystemRestorePointCreationFrequency' 0
     Checkpoint-Computer -Description "win-11 avant $Profil" -RestorePointType MODIFY_SETTINGS -ErrorAction Stop
 } catch { $Script:Warnings.Add('Point de restauration systeme non cree (le journal win-11 reste disponible).') }
 
-Invoke-Power
-Invoke-Gpu
-Invoke-Storage
-Invoke-Services
-Invoke-UpdatePolicy
-if (-not $Extreme) { Invoke-DefenderLight }
-
-if ($Profil -in 'Complet', 'CompletOLED') {
-    Invoke-Debloat
-    Invoke-Privacy
-    Invoke-Comfort
-}
-if ($Profil -eq 'CompletOLED') { Invoke-Oled }
-if ($Navigateurs) { Invoke-Browsers }
-if ($Extreme)     { Invoke-Extreme }
+foreach ($g in $Script:GroupList) { if ($g.Id -in $selected) { & "Invoke-$($g.Id)" } }
 
 Save-Journal
 
